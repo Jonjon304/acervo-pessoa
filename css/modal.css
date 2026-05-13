@@ -83,3 +83,36 @@
   gap: var(--espaco-sm);
   justify-content: flex-end;
 }
+
+.btn-flutuante {
+  position: fixed;
+  bottom: var(--espaco-xl);
+  right: var(--espaco-xl);
+  width: 56px;
+  height: 56px;
+  background: var(--cor-destaque);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
+  z-index: 90;
+  transition: transform var(--transicao-rapida), box-shadow var(--transicao-rapida);
+}
+
+.btn-flutuante:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.6);
+}
+
+@media (max-width: 767px) {
+  .btn-flutuante {
+    bottom: var(--espaco-lg);
+    right: var(--espaco-lg);
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+  }
+}

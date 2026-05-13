@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Eloquent JavaScript - Marijn Haverbeke - Acervo Pessoal">
+<title>Eloquent JavaScript - Acervo Pessoal</title>
+<link rel="stylesheet" href="../../css/reset.css">
+<link rel="stylesheet" href="../../css/variaveis.css">
+<link rel="stylesheet" href="../../css/global.css">
+<link rel="stylesheet" href="../../css/estante.css">
+<link rel="stylesheet" href="../../css/card.css">
+<link rel="stylesheet" href="../../css/leitor.css">
+<link rel="stylesheet" href="../../css/modal.css">
+<link rel="stylesheet" href="../../css/responsivo.css">
+</head>
+<body>
+
+<!--
+ACERVO ITEM METADATA
+titulo: Eloquent JavaScript
+autor: Marijn Haverbeke
+categoria: programacao
+tags: javascript, programacao, web
+data-adicao: 2025-01-15
+status: lido
+avaliacao: 4
+pagina-atual: 0
+total-paginas: 472
+fonte-pdf: local
+url-pdf: ../../pdfs/programacao/eloquent-javascript.pdf
+url-capa:
+notas:
+-->
+
+<header class="header">
+<div class="container header-interno">
+<a href="../../index.html" class="header-logo" aria-label="Pagina inicial">
+<span class="logo-icone" aria-hidden="true">&#128218;</span>
+<span class="logo-texto">Acervo Pessoal</span>
+</a>
+<nav class="header-nav" aria-label="Navegacao principal">
+<a href="../../categorias/index.html" class="nav-link">Categorias</a>
+</nav>
+</div>
+</header>
+
+<main class="main container">
+<div class="breadcrumb">
+<a href="../../index.html">Home</a> <span>&#8250;</span> <a href="../../categorias/programacao.html">Programacao</a> <span>&#8250;</span> Eloquent JavaScript
+</div>
+
+<div class="detalhe-cabecalho">
+<div class="detalhe-capa">
+<div class="capa-placeholder" aria-label="Capa do livro: Eloquent JavaScript">
+<span class="capa-titulo">Eloquent JavaScript</span>
+<span class="capa-autor">Marijn Haverbeke</span>
+</div>
+</div>
+
+<div class="detalhe-info">
+<h1 class="detalhe-titulo">Eloquent JavaScript</h1>
+<p class="detalhe-autor">Marijn Haverbeke</p>
+
+<div class="detalhe-meta">
+<span class="status status-lido status-item">Lido</span>
+<span class="detalhe-data">Adicionado em: 15/01/2025</span>
+</div>
+
+<div class="avaliacao" aria-label="Avaliacao: 4 de 5 estrelas">
+&#9733;&#9733;&#9733;&#9733;<span class="vazia">&#9733;</span>
+</div>
+
+<div class="detalhe-progresso">
+<div class="progresso progresso-0" aria-label="0% lido"></div>
+<span class="progresso-texto">0%</span>
+<span class="pagina-atual">Pagina atual: 0 de 472</span>
+</div>
+
+<div class="detalhe-acoes">
+<a href="../../pdfs/programacao/eloquent-javascript.pdf#page=1" class="botao-primario link-continuar">
+Ler do inicio
+</a>
+<button class="botao-secundario" id="btn-marcar-pagina">
+Marcar pagina
+</button>
+</div>
+
+<div class="detalhe-tags">
+<span class="tag">javascript</span>
+<span class="tag">programacao</span>
+<span class="tag">web</span>
+</div>
+</div>
+</div>
+
+<details class="notas-pessoais">
+<summary>Notas Pessoais</summary>
+<p>Nenhuma nota registrada ainda.</p>
+</details>
+
+<section class="leitor-secao">
+<h2>Leitor</h2>
+<iframe
+src="../../pdfs/programacao/eloquent-javascript.pdf#page=1"
+class="leitor-pdf"
+title="Leitor de PDF - Eloquent JavaScript"
+aria-label="Documento PDF embutido"
+loading="lazy"
+id="iframe-pdf"
+></iframe>
+</section>
+
+<div class="sincronizar-botoes">
+<button id="btn-exportar" class="botao-secundario">&#128229; Exportar progresso</button>
+<label for="input-importar" class="botao-secundario">&#128228; Importar progresso</label>
+<input type="file" id="input-importar" accept=".json" class="visually-hidden">
+</div>
+
+</main>
+
+<div class="modal-overlay" id="modal-progresso" aria-hidden="true">
+<div class="modal-conteudo" role="dialog" aria-labelledby="modal-titulo" aria-modal="true">
+<h2 id="modal-titulo">Em qual pagina voce parou?</h2>
+<p class="modal-livro">Eloquent JavaScript</p>
+<div class="modal-input-grupo">
+<label for="input-pagina">Pagina:</label>
+<input type="number" id="input-pagina" min="0" max="472" placeholder="42">
+<span class="modal-total">de 472</span>
+</div>
+<div class="modal-acoes">
+<button class="botao-secundario" id="modal-cancelar">Cancelar</button>
+<button class="botao-primario" id="modal-salvar">Salvar pagina</button>
+</div>
+</div>
+</div>
+
+<footer class="footer">
+<div class="container footer-interno">
+<p>Acervo Pessoal &copy; 2025 &middot; Feito com HTML + CSS + JS</p>
+</div>
+</footer>
+
+<script src="../../js/progresso.js" defer></script>
+<script src="../../js/modal.js" defer></script>
+<script src="../../js/exportar.js" defer></script>
+<script src="../../js/importar.js" defer></script>
+<script defer>
+document.addEventListener('DOMContentLoaded', function() {
+var slug = 'eloquent-javascript';
+var totalPaginas = 472;
+var urlBase = '../../pdfs/programacao/eloquent-javascript.pdf';
+
+inicializarProgressoPagina(slug, urlBase, totalPaginas);
+configurarModal(slug, 'Eloquent JavaScript', totalPaginas, urlBase);
+
+var btnMarcar = document.getElementById('btn-marcar-pagina');
+if (btnMarcar) {
+btnMarcar.addEventListener('click', function() {
+abrirModal(slug, 'Eloquent JavaScript', totalPaginas);
+});
+}
+
+var iframe = document.getElementById('iframe-pdf');
+if (iframe) {
+iframe.addEventListener('blur', function() {
+setTimeout(function() {
+abrirModal(slug, 'Eloquent JavaScript', totalPaginas);
+}, 300);
+});
+}
+
+if (typeof configurarExportar === 'function') configurarExportar();
+if (typeof configurarImportar === 'function') configurarImportar();
+});
+</script>
+
+</body>
+</html>

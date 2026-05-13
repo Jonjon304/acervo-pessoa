@@ -239,6 +239,10 @@
     </div>
   </div>
 
+  <button class="btn-flutuante" id="btn-marcar-pagina" aria-label="Marcar pagina" title="Marcar pagina de leitura">
+    &#128209;
+  </button>
+
   <footer class="footer">
     <div class="container footer-interno">
       <p>Acervo Pessoal &copy; 2025 &middot; Feito com HTML + CSS + JS</p>
@@ -287,10 +291,79 @@
         configurarExportar();
       }
 
-      if (typeof configurarImportar === 'function') {
-        configurarImportar();
-      }
+    if (typeof configurarImportar === 'function') {
+      configurarImportar();
+    }
+
+    var livrosComModal = document.querySelectorAll('.livro[data-slug]');
+    livrosComModal.forEach(function(livro) {
+      livro.addEventListener('click', function(e) {
+        if (e.target.closest('a')) return;
+        var slug = livro.getAttribute('data-slug');
+        var total = parseInt(livro.getAttribute('data-total-paginas'), 10) || 0;
+        var titulo = livro.querySelector('h3') ? livro.querySelector('h3').textContent.trim() : slug;
+        abrirModal(slug, titulo, total);
+      });
     });
+
+    var ultimoSlugClicado = null;
+    livrosComModal.forEach(function(livro) {
+      livro.addEventListener('click', function(e) {
+        if (e.target.closest('a')) return;
+        ultimoSlugClicado = livro.getAttribute('data-slug');
+      });
+    });
+
+    configurarModalHome(ultimoSlugClicado);
+
+    var btnFlutuante = document.getElementById('btn-marcar-pagina');
+    if (btnFlutuante) {
+      btnFlutuante.addEventListener('click', function() {
+        var primeiroLivro = document.querySelector('.livro[data-slug]');
+        if (primeiroLivro) {
+          var slug = primeiroLivro.getAttribute('data-slug');
+          var total = parseInt(primeiroLivro.getAttribute('data-total-paginas'), 10) || 0;
+          var titulo = primeiroLivro.querySelector('h3') ? primeiroLivro.querySelector('h3').textContent.trim() : slug;
+          abrirModal(slug, titulo, total);
+          configurarModalHome(slug);
+        }
+      });
+    }
+  });
+
+  function configurarModalHome(slugAtual) {
+    var overlay = document.getElementById('modal-progresso');
+    if (!overlay) return;
+
+    var btnSalvar = overlay.querySelector('#modal-salvar');
+    var inputEl = overlay.querySelector('#input-pagina');
+
+    if (btnSalvar) {
+      btnSalvar.onclick = function() {
+        var pagina = parseInt(inputEl.value, 10);
+        if (isNaN(pagina) || pagina < 0) {
+          inputEl.style.borderColor = '#e94560';
+          return;
+        }
+
+        var livroEl = document.querySelector('.livro[data-slug="' + slugAtual + '"]');
+        if (!livroEl) return;
+
+        var total = parseInt(livroEl.getAttribute('data-total-paginas'), 10) || 0;
+        var resultado = salvarProgresso(slugAtual, pagina, total);
+
+        var barra = livroEl.querySelector('.progresso');
+        var paginaLabel = livroEl.querySelector('.pagina-atual');
+        var statusEl = livroEl.querySelector('.status');
+
+        if (barra) renderizarBarraProgresso(barra, pagina, total);
+        if (paginaLabel && pagina > 0) paginaLabel.textContent = 'pag. ' + pagina;
+        if (statusEl) atualizarStatusBadge(statusEl, resultado.status);
+
+        fecharModal();
+      };
+    }
+  }
   </script>
 
 </body>
