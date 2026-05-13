@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Livros de Design no Acervo Pessoal.">
+<title>Design - Acervo Pessoal</title>
+<link rel="stylesheet" href="../css/reset.css">
+<link rel="stylesheet" href="../css/variaveis.css">
+<link rel="stylesheet" href="../css/global.css">
+<link rel="stylesheet" href="../css/estante.css">
+<link rel="stylesheet" href="../css/card.css">
+<link rel="stylesheet" href="../css/categorias.css">
+<link rel="stylesheet" href="../css/responsivo.css">
+<link rel="stylesheet" href="../css/leitor.css">
+</head>
+<body>
+
+<header class="header">
+<div class="container header-interno">
+<a href="../index.html" class="header-logo" aria-label="Pagina inicial">
+<span class="logo-icone" aria-hidden="true">&#128218;</span>
+<span class="logo-texto">Acervo Pessoal</span>
+</a>
+<nav class="header-nav" aria-label="Navegacao principal">
+<a href="./index.html" class="nav-link nav-link-ativo">Categorias</a>
+</nav>
+</div>
+</header>
+
+<main class="main container">
+<div class="breadcrumb">
+<a href="../index.html">Home</a> <span>&#8250;</span> <a href="./index.html">Categorias</a> <span>&#8250;</span> Design
+</div>
+
+<h1>Design</h1>
+
+<section class="estante" aria-label="Livros de design">
+<div class="prateleira prateleira-wrap">
+
+<article class="livro" data-slug="dont-make-me-think" data-total-paginas="216">
+<div class="livro-capa">
+<div class="capa-placeholder">
+<span class="capa-titulo">Don't Make Me Think</span>
+<span class="capa-autor">Steve Krug</span>
+</div>
+<span class="status status-quero-ler">Quero Ler</span>
+</div>
+<div class="livro-info">
+<h3><a href="../acervo/design/dont-make-me-think.html">Don't Make Me Think</a></h3>
+<p class="livro-autor">Steve Krug</p>
+<div class="progresso progresso-0" aria-label="0% lido"></div>
+<span class="pagina-atual"></span>
+</div>
+</article>
+
+</div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container footer-interno">
+<p>Acervo Pessoal &copy; 2025 &middot; Feito com HTML + CSS + JS</p>
+</div>
+</footer>
+
+<script src="../js/progresso.js" defer></script>
+<script defer>
+document.addEventListener('DOMContentLoaded', function() {
+var livros = document.querySelectorAll('.livro');
+livros.forEach(function(livro) {
+var slug = livro.getAttribute('data-slug');
+var dados = lerProgressoItem(slug);
+if (dados) {
+var barra = livro.querySelector('.progresso');
+var paginaLabel = livro.querySelector('.pagina-atual');
+var statusEl = livro.querySelector('.status');
+if (barra) renderizarBarraProgresso(barra, dados.paginaAtual, dados.totalPaginas);
+if (paginaLabel && dados.paginaAtual > 0) paginaLabel.textContent = 'pag. ' + dados.paginaAtual;
+if (statusEl) atualizarStatusBadge(statusEl, dados.status);
+}
+});
+});
+</script>
+
+</body>
+</html>
