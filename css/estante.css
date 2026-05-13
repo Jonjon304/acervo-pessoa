@@ -1,0 +1,109 @@
+.header {
+  background-color: var(--cor-fundo-card);
+  border-bottom: 1px solid var(--cor-borda);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-interno {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--espaco-md) 0;
+  gap: var(--espaco-md);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-sm);
+  color: var(--cor-texto);
+  text-decoration: none;
+  font-family: var(--font-titulo);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.header-logo:hover {
+  color: var(--cor-destaque);
+  text-decoration: none;
+}
+
+.logo-icone {
+  font-size: 1.5rem;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-md);
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  color: var(--cor-texto-sec);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: var(--espaco-xs) var(--espaco-sm);
+  border-radius: var(--raio-sm);
+  transition: color var(--transicao-rapida);
+}
+
+.nav-link:hover {
+  color: var(--cor-texto);
+  text-decoration: none;
+}
+
+.nav-btn-adicionar {
+  background-color: var(--cor-destaque);
+  color: #fff;
+  padding: var(--espaco-xs) var(--espaco-md);
+  border-radius: var(--raio-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color var(--transicao-rapida);
+}
+
+.nav-btn-adicionar:hover {
+  background-color: #d63b55;
+}
+
+.nav-sincronizar {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-sm);
+}
+
+.nav-btn-sinc {
+  color: var(--cor-texto-sec);
+  padding: var(--espaco-xs) var(--espaco-sm);
+  border-radius: var(--raio-sm);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color var(--transicao-rapida);
+  border: 1px solid var(--cor-borda);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-xs);
+}
+
+.nav-btn-sinc:hover {
+  color: var(--cor-texto);
+  border-color: var(--cor-texto-sec);
+}
+
+.main {
+  padding: var(--espaco-xl) 0;
+  min-height: calc(100vh - 140px);
+}
+
+.footer {
+  background-color: var(--cor-fundo-card);
+  border-top: 1px solid var(--cor-borda);
+  padding: var(--espaco-lg) 0;
+  text-align: center;
+  color: var(--cor-texto-sec);
+  font-size: 0.85rem;
+}

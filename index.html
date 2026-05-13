@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acervo Pessoal - Biblioteca digital de PDFs com estantes virtuais e acompanhamento de leitura.">
+  <title>Acervo Pessoal - Biblioteca Digital</title>
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/variaveis.css">
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/estante.css">
+  <link rel="stylesheet" href="./css/card.css">
+  <link rel="stylesheet" href="./css/modal.css">
+  <link rel="stylesheet" href="./css/form-adicionar.css">
+  <link rel="stylesheet" href="./css/responsivo.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-interno">
+      <a href="./index.html" class="header-logo" aria-label="Pagina inicial">
+        <span class="logo-icone" aria-hidden="true">&#128218;</span>
+        <span class="logo-texto">Acervo Pessoal</span>
+      </a>
+      <nav class="header-nav" aria-label="Navegacao principal">
+        <a href="./categorias/index.html" class="nav-link">Categorias</a>
+        <button id="btn-adicionar-pdf" class="nav-btn-adicionar" aria-label="Adicionar PDF">
+          <span aria-hidden="true">+</span> Adicionar
+        </button>
+        <div class="nav-sincronizar">
+          <button id="btn-exportar" class="nav-btn-sinc" aria-label="Exportar progresso">
+            <span aria-hidden="true">&#128229;</span> Exportar
+          </button>
+          <label for="input-importar" class="nav-btn-sinc" aria-label="Importar progresso">
+            <span aria-hidden="true">&#128228;</span> Importar
+          </label>
+          <input type="file" id="input-importar" accept=".json" class="visually-hidden">
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main container">
+
+    <div id="container-form-adicionar" class="container-form-adicionar" aria-hidden="true">
+      <form id="form-adicionar-pdf" class="form-adicionar">
+        <h2>Adicionar PDF</h2>
+
+        <div class="form-grupo">
+          <label for="input-titulo">Titulo *</label>
+          <input type="text" id="input-titulo" required placeholder="Ex: Clean Code">
+        </div>
+
+        <div class="form-grupo">
+          <label for="input-autor">Autor</label>
+          <input type="text" id="input-autor" placeholder="Ex: Robert C. Martin">
+        </div>
+
+        <div class="form-grupo">
+          <label for="input-categoria">Categoria *</label>
+          <select id="input-categoria" required>
+            <option value="programacao">Programacao</option>
+            <option value="design">Design</option>
+            <option value="engenharia">Engenharia</option>
+            <option value="literatura">Literatura</option>
+            <option value="ciencia">Ciencia</option>
+            <option value="negocios">Negocios</option>
+            <option value="pessoal">Desenvolvimento Pessoal</option>
+          </select>
+        </div>
+
+        <div class="form-grupo">
+          <label for="input-link-pdf">Link do PDF * (Google Drive, Dropbox, etc)</label>
+          <input type="url" id="input-link-pdf" required placeholder="https://drive.google.com/file/d/...">
+        </div>
+
+        <div class="form-grupo">
+          <label for="input-total-paginas">Total de Paginas</label>
+          <input type="number" id="input-total-paginas" min="1" placeholder="200">
+        </div>
+
+        <div class="form-grupo">
+          <label for="input-link-capa">Link da Capa (opcional)</label>
+          <input type="url" id="input-link-capa" placeholder="https://...">
+        </div>
+
+        <div class="form-acoes">
+          <button type="submit" class="botao-primario">Adicionar ao Acervo</button>
+          <button type="button" class="botao-secundario" id="btn-cancelar-adicao">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    <section class="estante" aria-label="Livros que estou lendo">
+      <h2 class="estante-titulo">Lendo Agora <a href="#" class="ver-todos">ver todos &#8250;</a></h2>
+      <div class="prateleira">
+
+        <article class="livro" data-slug="clean-code" data-total-paginas="464">
+          <div class="livro-capa">
+            <div class="capa-placeholder">
+              <span class="capa-titulo">Clean Code</span>
+              <span class="capa-autor">Robert C. Martin</span>
+            </div>
+            <span class="status status-lendo">Lendo</span>
+          </div>
+          <div class="livro-info">
+            <h3><a href="./acervo/programacao/clean-code.html">Clean Code</a></h3>
+            <p class="livro-autor">Robert C. Martin</p>
+            <div class="progresso progresso-0" aria-label="0% lido"></div>
+            <span class="pagina-atual"></span>
+          </div>
+        </article>
+
+        <article class="livro" data-slug="pragmatic-programmer" data-total-paginas="352">
+          <div class="livro-capa">
+            <div class="capa-placeholder">
+              <span class="capa-titulo">The Pragmatic Programmer</span>
+              <span class="capa-autor">Hunt &amp; Thomas</span>
+            </div>
+            <span class="status status-lendo">Lendo</span>
+          </div>
+          <div class="livro-info">
+            <h3><a href="./acervo/programacao/pragmatic-programmer.html">The Pragmatic Programmer</a></h3>
+            <p class="livro-autor">Hunt &amp; Thomas</p>
+            <div class="progresso progresso-0" aria-label="0% lido"></div>
+            <span class="pagina-atual"></span>
+          </div>
+        </article>
+
+        <article class="livro" data-slug="dont-make-me-think" data-total-paginas="216">
+          <div class="livro-capa">
+            <div class="capa-placeholder">
+              <span class="capa-titulo">Don't Make Me Think</span>
+              <span class="capa-autor">Steve Krug</span>
+            </div>
+            <span class="status status-lendo">Lendo</span>
+          </div>
+          <div class="livro-info">
+            <h3><a href="./acervo/design/dont-make-me-think.html">Don't Make Me Think</a></h3>
+            <p class="livro-autor">Steve Krug</p>
+            <div class="progresso progresso-0" aria-label="0% lido"></div>
+            <span class="pagina-atual"></span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="estante" aria-label="Livros que quero ler">
+      <h2 class="estante-titulo">Quero Ler <a href="#" class="ver-todos">ver todos &#8250;</a></h2>
+      <div class="prateleira">
+
+        <article class="livro" data-slug="design-patterns" data-total-paginas="395">
+          <div class="livro-capa">
+            <div class="capa-placeholder">
+              <span class="capa-titulo">Design Patterns</span>
+              <span class="capa-autor">Gang of Four</span>
+            </div>
+            <span class="status status-quero-ler">Quero Ler</span>
+          </div>
+          <div class="livro-info">
+            <h3><a href="./acervo/programacao/design-patterns.html">Design Patterns</a></h3>
+            <p class="livro-autor">Gang of Four</p>
+          </div>
+        </article>
+
+        <article class="livro" data-slug="refactoring" data-total-paginas="448">
+          <div class="livro-capa">
+            <div class="capa-placeholder">
+              <span class="capa-titulo">Refactoring</span>
+              <span class="capa-autor">Martin Fowler</span>
+            </div>
+            <span class="status status-quero-ler">Quero Ler</span>
+          </div>
+          <div class="livro-info">
+            <h3><a href="./acervo/programacao/refactoring.html">Refactoring</a></h3>
+            <p class="livro-autor">Martin Fowler</p>
+          </div>
+        </article>
+
+        <article class="livro" data-slug="atomic-habits" data-total-paginas="320">
+          <div class="livro-capa">
+            <div class="capa-placeholder">
+              <span class="capa-titulo">Atomic Habits</span>
+              <span class="capa-autor">James Clear</span>
+            </div>
+            <span class="status status-quero-ler">Quero Ler</span>
+          </div>
+          <div class="livro-info">
+            <h3><a href="./acervo/pessoal/atomic-habits.html">Atomic Habits</a></h3>
+            <p class="livro-autor">James Clear</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="estante" aria-label="Livros ja lidos">
+      <h2 class="estante-titulo">Ja Li <a href="#" class="ver-todos">ver todos &#8250;</a></h2>
+      <div class="prateleira">
+
+        <article class="livro" data-slug="eloquent-javascript" data-total-paginas="472">
+          <div class="livro-capa">
+            <div class="capa-placeholder">
+              <span class="capa-titulo">Eloquent JavaScript</span>
+              <span class="capa-autor">Marijn Haverbeke</span>
+            </div>
+            <span class="status status-lido">Lido</span>
+          </div>
+          <div class="livro-info">
+            <h3><a href="./acervo/programacao/eloquent-javascript.html">Eloquent JavaScript</a></h3>
+            <p class="livro-autor">Marijn Haverbeke</p>
+            <div class="avaliacao" aria-label="Avaliacao: 4 de 5 estrelas">
+              &#9733;&#9733;&#9733;&#9733;<span class="vazia">&#9733;</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <div id="itens-dinamicos-container"></div>
+
+  </main>
+
+  <div class="modal-overlay" id="modal-progresso" aria-hidden="true">
+    <div class="modal-conteudo" role="dialog" aria-labelledby="modal-titulo" aria-modal="true">
+      <h2 id="modal-titulo">Em qual pagina voce parou?</h2>
+      <p class="modal-livro"></p>
+      <div class="modal-input-grupo">
+        <label for="input-pagina">Pagina:</label>
+        <input type="number" id="input-pagina" min="0" placeholder="42">
+        <span class="modal-total"></span>
+      </div>
+      <div class="modal-acoes">
+        <button class="botao-secundario" id="modal-cancelar">Cancelar</button>
+        <button class="botao-primario" id="modal-salvar">Salvar pagina</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-interno">
+      <p>Acervo Pessoal &copy; 2025 &middot; Feito com HTML + CSS + JS</p>
+    </div>
+  </footer>
+
+  <script src="./js/progresso.js" defer></script>
+  <script src="./js/modal.js" defer></script>
+  <script src="./js/exportar.js" defer></script>
+  <script src="./js/importar.js" defer></script>
+  <script src="./js/adicionar.js" defer></script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+      var livros = document.querySelectorAll('.livro');
+      livros.forEach(function(livro) {
+        var slug = livro.getAttribute('data-slug');
+        var total = parseInt(livro.getAttribute('data-total-paginas'), 10) || 0;
+        var dados = lerProgressoItem(slug);
+
+        if (dados) {
+          var barra = livro.querySelector('.progresso');
+          var paginaLabel = livro.querySelector('.pagina-atual');
+          var statusEl = livro.querySelector('.status');
+
+          if (barra) {
+            renderizarBarraProgresso(barra, dados.paginaAtual, dados.totalPaginas);
+          }
+          if (paginaLabel && dados.paginaAtual > 0) {
+            paginaLabel.textContent = 'pag. ' + dados.paginaAtual;
+          }
+          if (statusEl) {
+            atualizarStatusBadge(statusEl, dados.status);
+          }
+        }
+      });
+
+      if (typeof renderizarItensDinamicos === 'function') {
+        renderizarItensDinamicos('#itens-dinamicos-container');
+      }
+
+      if (typeof configurarFormularioAdicionar === 'function') {
+        configurarFormularioAdicionar();
+      }
+
+      if (typeof configurarExportar === 'function') {
+        configurarExportar();
+      }
+
+      if (typeof configurarImportar === 'function') {
+        configurarImportar();
+      }
+    });
+  </script>
+
+</body>
+</html>

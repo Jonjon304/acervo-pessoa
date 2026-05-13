@@ -1,0 +1,85 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--cor-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transicao-media), visibility var(--transicao-media);
+}
+
+.modal-overlay.modal-ativo {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-conteudo {
+  background: var(--cor-fundo-card);
+  padding: var(--espaco-xl);
+  border-radius: var(--raio-lg);
+  max-width: 400px;
+  width: 90%;
+  border: 1px solid var(--cor-borda);
+  transform: translateY(20px);
+  transition: transform var(--transicao-media);
+}
+
+.modal-ativo .modal-conteudo {
+  transform: translateY(0);
+}
+
+.modal-conteudo h2 {
+  font-size: 1.25rem;
+  margin-bottom: var(--espaco-sm);
+  color: var(--cor-texto);
+}
+
+.modal-livro {
+  color: var(--cor-destaque);
+  font-weight: 600;
+  margin-bottom: var(--espaco-lg);
+}
+
+.modal-input-grupo {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-sm);
+  margin-bottom: var(--espaco-lg);
+}
+
+.modal-input-grupo label {
+  color: var(--cor-texto-sec);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.modal-input-grupo input {
+  flex: 1;
+  background: var(--cor-input-bg);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-sm);
+  padding: var(--espaco-sm) var(--espaco-md);
+  color: var(--cor-texto);
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color var(--transicao-rapida);
+}
+
+.modal-input-grupo input:focus {
+  outline: none;
+  border-color: var(--cor-destaque);
+}
+
+.modal-total {
+  color: var(--cor-texto-sec);
+  font-size: 0.85rem;
+}
+
+.modal-acoes {
+  display: flex;
+  gap: var(--espaco-sm);
+  justify-content: flex-end;
+}

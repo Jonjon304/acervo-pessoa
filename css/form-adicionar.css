@@ -1,0 +1,73 @@
+.container-form-adicionar {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transicao-media), margin var(--transicao-media);
+  margin-bottom: 0;
+}
+
+.container-form-adicionar.form-ativo {
+  max-height: 600px;
+  margin-bottom: var(--espaco-xl);
+}
+
+.form-adicionar {
+  background: var(--cor-fundo-card);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-lg);
+  padding: var(--espaco-xl);
+}
+
+.form-adicionar h2 {
+  margin-bottom: var(--espaco-lg);
+  font-size: 1.25rem;
+}
+
+.form-grupo {
+  margin-bottom: var(--espaco-md);
+}
+
+.form-grupo label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--cor-texto-sec);
+  margin-bottom: var(--espaco-xs);
+  font-weight: 500;
+}
+
+.form-grupo input,
+.form-grupo select {
+  width: 100%;
+  background: var(--cor-input-bg);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-sm);
+  padding: var(--espaco-sm) var(--espaco-md);
+  color: var(--cor-texto);
+  font-size: 0.95rem;
+  transition: border-color var(--transicao-rapida);
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus {
+  outline: none;
+  border-color: var(--cor-destaque);
+}
+
+.form-grupo input::placeholder {
+  color: var(--cor-texto-sec);
+  opacity: 0.6;
+}
+
+.form-grupo select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0b0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 2rem;
+}
+
+.form-acoes {
+  display: flex;
+  gap: var(--espaco-sm);
+  margin-top: var(--espaco-lg);
+}

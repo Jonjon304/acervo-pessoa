@@ -1,0 +1,106 @@
+@media (min-width: 768px) {
+  .livro {
+    flex: 0 0 170px;
+  }
+
+  .livro-capa {
+    width: 170px;
+    height: 240px;
+  }
+
+  .prateleira {
+    flex-wrap: nowrap;
+  }
+
+  .header-nav {
+    flex-wrap: nowrap;
+  }
+}
+
+@media (min-width: 1024px) {
+  .prateleira {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .livro {
+    flex: 0 0 calc(20% - var(--espaco-lg));
+  }
+
+  .livro-capa {
+    width: 100%;
+  }
+
+  .form-adicionar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 var(--espaco-lg);
+  }
+
+  .form-adicionar h2 {
+    grid-column: 1 / -1;
+  }
+
+  .form-acoes {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  .livro {
+    flex: 0 0 calc(16.666% - var(--espaco-lg));
+  }
+}
+
+@media (max-width: 767px) {
+  .header-interno {
+    flex-wrap: wrap;
+    gap: var(--espaco-sm);
+  }
+
+  .header-nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-sincronizar {
+    display: flex;
+    gap: var(--espaco-xs);
+  }
+
+  .nav-btn-sinc {
+    font-size: 0.75rem;
+    padding: var(--espaco-xs);
+  }
+
+  .nav-btn-adicionar {
+    font-size: 0.8rem;
+    padding: var(--espaco-xs) var(--espaco-sm);
+  }
+
+  .estante-titulo {
+    font-size: 1.2rem;
+  }
+
+  .livro {
+    flex: 0 0 140px;
+  }
+
+  .livro-capa {
+    width: 140px;
+    height: 200px;
+  }
+
+  .form-adicionar {
+    padding: var(--espaco-md);
+  }
+
+  .modal-conteudo {
+    padding: var(--espaco-lg);
+    margin: var(--espaco-md);
+  }
+}

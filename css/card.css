@@ -1,0 +1,209 @@
+.estante {
+  margin-bottom: var(--espaco-xxl);
+}
+
+.estante-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--espaco-lg);
+  padding-bottom: var(--espaco-sm);
+  border-bottom: 2px solid var(--cor-borda);
+}
+
+.ver-todos {
+  font-family: var(--font-corpo);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--cor-texto-sec);
+}
+
+.ver-todos:hover {
+  color: var(--cor-destaque);
+}
+
+.prateleira {
+  display: flex;
+  gap: var(--espaco-lg);
+  overflow-x: auto;
+  padding: var(--espaco-sm) var(--espaco-xs) var(--espaco-lg);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prateleira::-webkit-scrollbar {
+  height: 6px;
+}
+
+.prateleira::-webkit-scrollbar-track {
+  background: var(--cor-fundo-card);
+  border-radius: 3px;
+}
+
+.prateleira::-webkit-scrollbar-thumb {
+  background: var(--cor-borda);
+  border-radius: 3px;
+}
+
+.livro {
+  flex: 0 0 160px;
+  scroll-snap-align: start;
+  transition: transform var(--transicao-rapida);
+  position: relative;
+}
+
+.livro:hover {
+  transform: translateY(-4px);
+}
+
+.livro-capa {
+  position: relative;
+  width: 160px;
+  height: 220px;
+  border-radius: var(--raio-sm);
+  overflow: hidden;
+  box-shadow: var(--sombra-card);
+  transition: box-shadow var(--transicao-rapida);
+  border-left: 4px solid var(--cor-destaque);
+}
+
+.livro:hover .livro-capa {
+  box-shadow: var(--sombra-card-hover);
+}
+
+.livro-capa img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.capa-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--cor-fundo-card), var(--cor-fundo-estante));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--espaco-sm);
+}
+
+.capa-titulo {
+  font-family: var(--font-titulo);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--cor-texto);
+  margin-bottom: var(--espaco-xs);
+  word-wrap: break-word;
+}
+
+.capa-autor {
+  font-size: 0.75rem;
+  color: var(--cor-texto-sec);
+}
+
+.livro-capa .status {
+  position: absolute;
+  top: var(--espaco-sm);
+  right: var(--espaco-sm);
+  font-size: 0.65rem;
+}
+
+.livro-capa .status-externo {
+  position: absolute;
+  bottom: var(--espaco-sm);
+  right: var(--espaco-sm);
+  font-size: 0.6rem;
+}
+
+.livro-info {
+  padding: var(--espaco-sm) 0;
+}
+
+.livro-info h3 {
+  font-size: 0.9rem;
+  margin-bottom: var(--espaco-xs);
+}
+
+.livro-info h3 a {
+  color: var(--cor-texto);
+  transition: color var(--transicao-rapida);
+}
+
+.livro-info h3 a:hover {
+  color: var(--cor-destaque);
+  text-decoration: none;
+}
+
+.livro-autor {
+  font-size: 0.8rem;
+  color: var(--cor-texto-sec);
+  margin-bottom: var(--espaco-xs);
+}
+
+.progresso {
+  width: 100%;
+  height: 4px;
+  background: var(--cor-estrela-off);
+  border-radius: 2px;
+  margin: var(--espaco-xs) 0;
+  overflow: hidden;
+}
+
+.progresso::after {
+  content: '';
+  display: block;
+  height: 100%;
+  background: var(--cor-lendo);
+  border-radius: 2px;
+  transition: width var(--transicao-media);
+}
+
+.progresso-0::after { width: 0%; }
+.progresso-25::after { width: 25%; }
+.progresso-50::after { width: 50%; }
+.progresso-75::after { width: 75%; }
+.progresso-100::after { width: 100%; }
+
+.progresso-100::after {
+  background: var(--cor-lido);
+}
+
+.progresso-texto {
+  font-size: 0.75rem;
+  color: var(--cor-texto-sec);
+}
+
+.pagina-atual {
+  font-size: 0.75rem;
+  color: var(--cor-texto-sec);
+}
+
+.livro-dinamico {
+  border: 1px dashed var(--cor-borda);
+  border-radius: var(--raio-md);
+  padding: var(--espaco-xs);
+}
+
+.btn-remover-dinamico {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  background: var(--cor-destaque);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transicao-rapida);
+}
+
+.livro-dinamico:hover .btn-remover-dinamico {
+  opacity: 1;
+}
