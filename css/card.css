@@ -31,6 +31,11 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.prateleira-wrap {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
 .prateleira::-webkit-scrollbar {
   height: 6px;
 }
