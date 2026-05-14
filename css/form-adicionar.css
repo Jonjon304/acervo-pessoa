@@ -71,3 +71,10 @@
   gap: var(--espaco-sm);
   margin-top: var(--espaco-lg);
 }
+
+.form-dica {
+  display: block;
+  color: var(--cor-lido);
+  font-size: 0.8rem;
+  margin-top: var(--espaco-xs);
+}

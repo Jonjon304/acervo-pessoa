@@ -115,11 +115,12 @@
   font-size: 0.65rem;
 }
 
-.livro-capa .status-externo {
-  position: absolute;
-  bottom: var(--espaco-sm);
-  right: var(--espaco-sm);
-  font-size: 0.6rem;
+.livro-categoria {
+  font-size: 0.7rem;
+  color: var(--cor-destaque);
+  text-transform: capitalize;
+  margin-bottom: var(--espaco-xs);
+  letter-spacing: 0.03em;
 }
 
 .livro-info {
@@ -211,4 +212,33 @@
 
 .livro-dinamico:hover .btn-remover-dinamico {
   opacity: 1;
+}
+
+.btn-editar-dinamico {
+  position: absolute;
+  top: -6px;
+  right: 20px;
+  width: 22px;
+  height: 22px;
+  background: var(--cor-fundo-estante);
+  color: var(--cor-texto-sec);
+  border: 1px solid var(--cor-borda);
+  border-radius: 50%;
+  font-size: 0.7rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transicao-rapida);
+}
+
+.livro-dinamico:hover .btn-editar-dinamico {
+  opacity: 1;
+}
+
+.btn-editar-dinamico:hover {
+  background: var(--cor-destaque);
+  color: #fff;
+  border-color: var(--cor-destaque);
 }

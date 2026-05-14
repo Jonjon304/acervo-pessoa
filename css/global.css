@@ -105,12 +105,6 @@ a:focus-visible {
   color: #1a1a2e;
 }
 
-.status-externo {
-  background: var(--cor-fundo-estante);
-  color: var(--cor-texto-sec);
-  border: 1px solid var(--cor-borda);
-}
-
 .avaliacao {
   color: var(--cor-estrela-on);
   letter-spacing: 2px;

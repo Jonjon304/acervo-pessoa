@@ -44,7 +44,9 @@
 
 <div id="container-form-adicionar" class="container-form-adicionar" aria-hidden="true">
 <form id="form-adicionar-pdf" class="form-adicionar">
-<h2>Adicionar PDF</h2>
+<h2 id="form-titulo">Adicionar PDF</h2>
+
+<input type="hidden" id="input-slug-edicao" value="">
 
 <div class="form-grupo">
 <label for="input-titulo">Titulo *</label>
@@ -84,8 +86,23 @@
 <input type="url" id="input-link-capa" placeholder="https://...">
 </div>
 
+<div class="form-grupo">
+<label for="input-upload-capa">Upload da Capa (opcional — substitui o link)</label>
+<input type="file" id="input-upload-capa" accept="image/*">
+<small class="form-dica" id="dica-upload-capa"></small>
+</div>
+
+<div class="form-grupo">
+<label for="input-status">Status</label>
+<select id="input-status">
+<option value="quero-ler">Quero Ler</option>
+<option value="lendo">Lendo</option>
+<option value="lido">Lido</option>
+</select>
+</div>
+
 <div class="form-acoes">
-<button type="submit" class="botao-primario">Adicionar ao Acervo</button>
+<button type="submit" class="botao-primario" id="btn-submit-form">Adicionar ao Acervo</button>
 <button type="button" class="botao-secundario" id="btn-cancelar-adicao">Cancelar</button>
 </div>
 </form>
@@ -125,14 +142,11 @@
 (function() {
 var CHAVE_ITENS = 'acervo-itens-dinamicos';
 var CHAVE_PROGRESSO = 'acervo-progresso';
+var capaBase64Temp = null;
 
 function lsDisponivel() {
-try {
-var t = '__test__';
-localStorage.setItem(t, '1');
-localStorage.removeItem(t);
-return true;
-} catch (e) { return false; }
+try { var t = '__test__'; localStorage.setItem(t, '1'); localStorage.removeItem(t); return true; }
+catch (e) { return false; }
 }
 
 function lerItens() {
@@ -142,10 +156,7 @@ return d ? JSON.parse(d) : {};
 }
 
 function salvarItem(slug, item) {
-if (!lsDisponivel()) {
-alert('localStorage indisponivel. Desative o modo privado do navegador.');
-return false;
-}
+if (!lsDisponivel()) { alert('localStorage indisponivel. Desative o modo privado do navegador.'); return false; }
 var itens = lerItens();
 itens[slug] = item;
 localStorage.setItem(CHAVE_ITENS, JSON.stringify(itens));
@@ -192,23 +203,31 @@ var pagAtual = dp.paginaAtual || 0;
 var sc = status === 'lido' ? 'status-lido' : status === 'lendo' ? 'status-lendo' : 'status-quero-ler';
 var st = status === 'lido' ? 'Lido' : status === 'lendo' ? 'Lendo' : 'Quero Ler';
 
+var capaSrc = item.capaBase64 || item.linkCapa || '';
+
 var el = document.createElement('article');
 el.className = 'livro livro-dinamico';
 el.setAttribute('data-slug', slug);
 if (item.totalPaginas) el.setAttribute('data-total-paginas', item.totalPaginas);
 
+var capaHtml;
+if (capaSrc) {
+capaHtml = '<img src="' + capaSrc + '" alt="' + item.titulo + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
++ '<div class="capa-placeholder capa-fallback" style="display:none"><span class="capa-titulo">' + item.titulo + '</span><span class="capa-autor">' + (item.autor || '') + '</span></div>';
+} else {
+capaHtml = '<div class="capa-placeholder"><span class="capa-titulo">' + item.titulo + '</span><span class="capa-autor">' + (item.autor || '') + '</span></div>';
+}
+
 el.innerHTML =
-'<div class="livro-capa">' +
-(item.linkCapa
-? '<img src="' + item.linkCapa + '" alt="' + item.titulo + '" loading="lazy">'
-: '<div class="capa-placeholder"><span class="capa-titulo">' + item.titulo + '</span><span class="capa-autor">' + (item.autor || '') + '</span></div>') +
-'<span class="status ' + sc + '">' + st + '</span>' +
-'<span class="status status-externo">Externo</span></div>' +
+'<div class="livro-capa">' + capaHtml +
+'<span class="status ' + sc + '">' + st + '</span></div>' +
 '<div class="livro-info"><h3><a href="' + item.linkPdf + '" target="_blank" rel="noopener">' + item.titulo + '</a></h3>' +
 (item.autor ? '<p class="livro-autor">' + item.autor + '</p>' : '') +
+(item.categoria ? '<p class="livro-categoria">' + item.categoria + '</p>' : '') +
 (pagAtual > 0 ? '<div class="progresso ' + cls + '" aria-label="' + pct + '% lido"></div><span class="pagina-atual">pag. ' + pagAtual + '</span>' : '') +
 '</div>' +
-'<button class="btn-remover-dinamico" data-slug="' + slug + '" aria-label="Remover ' + item.titulo + '" title="Remover">&times;</button>';
+'<button class="btn-remover-dinamico" data-slug="' + slug + '" aria-label="Remover ' + item.titulo + '" title="Remover">&times;</button>' +
+'<button class="btn-editar-dinamico" data-slug="' + slug + '" aria-label="Editar ' + item.titulo + '" title="Editar">&#9998;</button>';
 
 return el;
 }
@@ -223,7 +242,7 @@ if (slugs.length === 0) return;
 
 var secao = document.createElement('section');
 secao.className = 'estante';
-secao.setAttribute('aria-label', 'PDFs adicionados via link externo');
+secao.setAttribute('aria-label', 'PDFs adicionados');
 secao.innerHTML = '<h2>Adicionados Recentemente</h2>';
 
 var prat = document.createElement('div');
@@ -240,12 +259,80 @@ prat.querySelectorAll('.btn-remover-dinamico').forEach(function(btn) {
 btn.addEventListener('click', function(e) {
 e.stopPropagation();
 var s = btn.getAttribute('data-slug');
+var itens = lerItens();
 if (confirm('Remover "' + itens[s].titulo + '" do acervo?')) {
 removerItem(s);
 location.reload();
 }
 });
 });
+
+prat.querySelectorAll('.btn-editar-dinamico').forEach(function(btn) {
+btn.addEventListener('click', function(e) {
+e.stopPropagation();
+abrirFormEdicao(btn.getAttribute('data-slug'));
+});
+});
+}
+
+function abrirFormAdicao() {
+var form = document.getElementById('form-adicionar-pdf');
+var formContainer = document.getElementById('container-form-adicionar');
+var tituloEl = document.getElementById('form-titulo');
+var submitBtn = document.getElementById('btn-submit-form');
+var slugEdicao = document.getElementById('input-slug-edicao');
+
+slugEdicao.value = '';
+tituloEl.textContent = 'Adicionar PDF';
+submitBtn.textContent = 'Adicionar ao Acervo';
+form.reset();
+capaBase64Temp = null;
+var dica = document.getElementById('dica-upload-capa');
+if (dica) dica.textContent = '';
+
+formContainer.classList.add('form-ativo');
+formContainer.setAttribute('aria-hidden', 'false');
+setTimeout(function() {
+formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+var inp = formContainer.querySelector('#input-titulo');
+if (inp) inp.focus();
+}, 50);
+}
+
+function abrirFormEdicao(slug) {
+var itens = lerItens();
+var item = itens[slug];
+if (!item) return;
+
+var form = document.getElementById('form-adicionar-pdf');
+var formContainer = document.getElementById('container-form-adicionar');
+var tituloEl = document.getElementById('form-titulo');
+var submitBtn = document.getElementById('btn-submit-form');
+var slugEdicao = document.getElementById('input-slug-edicao');
+
+slugEdicao.value = slug;
+tituloEl.textContent = 'Editar PDF';
+submitBtn.textContent = 'Salvar Alteracoes';
+
+document.getElementById('input-titulo').value = item.titulo || '';
+document.getElementById('input-autor').value = item.autor || '';
+document.getElementById('input-categoria').value = item.categoria || 'programacao';
+document.getElementById('input-link-pdf').value = item.linkPdf || '';
+document.getElementById('input-total-paginas').value = item.totalPaginas || '';
+document.getElementById('input-link-capa').value = item.linkCapa || '';
+document.getElementById('input-status').value = item.status || 'quero-ler';
+
+capaBase64Temp = item.capaBase64 || null;
+var dica = document.getElementById('dica-upload-capa');
+if (dica) dica.textContent = capaBase64Temp ? 'Capa atual carregada. Selecione novo arquivo para substituir.' : '';
+
+formContainer.classList.add('form-ativo');
+formContainer.setAttribute('aria-hidden', 'false');
+setTimeout(function() {
+formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+var inp = formContainer.querySelector('#input-titulo');
+if (inp) inp.focus();
+}, 50);
 }
 
 function configurarFormulario() {
@@ -253,44 +340,76 @@ var form = document.getElementById('form-adicionar-pdf');
 var btnAbrir = document.getElementById('btn-adicionar-pdf');
 var btnCancelar = document.getElementById('btn-cancelar-adicao');
 var formContainer = document.getElementById('container-form-adicionar');
+var inputUploadCapa = document.getElementById('input-upload-capa');
 
 if (!form || !formContainer || !btnAbrir) return;
 
 btnAbrir.addEventListener('click', function(e) {
 e.preventDefault();
 e.stopPropagation();
-var estaAtivo = formContainer.classList.toggle('form-ativo');
-formContainer.setAttribute('aria-hidden', String(!estaAtivo));
-if (estaAtivo) {
-setTimeout(function() {
-formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-var inp = formContainer.querySelector('input');
-if (inp) inp.focus();
-}, 50);
-}
+abrirFormAdicao();
 });
+
+if (inputUploadCapa) {
+inputUploadCapa.addEventListener('change', function(e) {
+var file = e.target.files[0];
+if (!file) { capaBase64Temp = null; return; }
+if (file.size > 500000) {
+alert('Imagem muito grande (' + Math.round(file.size / 1024) + 'KB). Maximo recomendado: 500KB.');
+e.target.value = '';
+capaBase64Temp = null;
+return;
+}
+var reader = new FileReader();
+reader.onload = function(ev) {
+capaBase64Temp = ev.target.result;
+var dica = document.getElementById('dica-upload-capa');
+if (dica) dica.textContent = 'Imagem carregada: ' + file.name + ' (' + Math.round(file.size / 1024) + 'KB)';
+};
+reader.readAsDataURL(file);
+});
+}
 
 if (btnCancelar) {
 btnCancelar.addEventListener('click', function() {
 formContainer.classList.remove('form-ativo');
 formContainer.setAttribute('aria-hidden', 'true');
 form.reset();
+capaBase64Temp = null;
+var dica = document.getElementById('dica-upload-capa');
+if (dica) dica.textContent = '';
 });
 }
 
 form.addEventListener('submit', function(e) {
 e.preventDefault();
 
+var slugEdicao = document.getElementById('input-slug-edicao').value;
 var titulo = document.getElementById('input-titulo').value.trim();
 var autor = document.getElementById('input-autor').value.trim();
 var categoria = document.getElementById('input-categoria').value;
 var linkPdf = document.getElementById('input-link-pdf').value.trim();
 var totalPaginas = parseInt(document.getElementById('input-total-paginas').value, 10) || 0;
 var linkCapa = document.getElementById('input-link-capa').value.trim();
+var status = document.getElementById('input-status').value;
 
 if (!titulo || !linkPdf) return;
 
-var slug = gerarSlug(titulo);
+var slug = slugEdicao || gerarSlug(titulo);
+
+if (slugEdicao && slugEdicao !== slug) {
+var itens = lerItens();
+if (itens[slugEdicao]) {
+delete itens[slugEdicao];
+localStorage.setItem(CHAVE_ITENS, JSON.stringify(itens));
+var prog = JSON.parse(localStorage.getItem(CHAVE_PROGRESSO) || '{}');
+if (prog[slugEdicao]) {
+prog[slug] = prog[slugEdicao];
+delete prog[slugEdicao];
+localStorage.setItem(CHAVE_PROGRESSO, JSON.stringify(prog));
+}
+}
+}
 
 var item = {
 titulo: titulo,
@@ -299,14 +418,34 @@ categoria: categoria,
 linkPdf: linkPdf,
 linkCapa: linkCapa,
 totalPaginas: totalPaginas,
-status: 'quero-ler',
-dataAdicao: new Date().toISOString().split('T')[0],
+status: status,
+dataAdicao: slugEdicao ? (lerItens()[slug] || {}).dataAdicao || new Date().toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
 tipo: 'dinamico'
 };
+
+if (capaBase64Temp) {
+item.capaBase64 = capaBase64Temp;
+} else if (slugEdicao) {
+var existente = lerItens()[slugEdicao] || {};
+if (existente.capaBase64 && !linkCapa) {
+item.capaBase64 = existente.capaBase64;
+}
+}
+
+if (status !== 'quero-ler') {
+var prog = JSON.parse(localStorage.getItem(CHAVE_PROGRESSO) || '{}');
+prog[slug] = prog[slug] || {};
+prog[slug].status = status;
+if (status === 'lido' && totalPaginas) prog[slug].paginaAtual = totalPaginas;
+localStorage.setItem(CHAVE_PROGRESSO, JSON.stringify(prog));
+}
 
 if (!salvarItem(slug, item)) return;
 
 form.reset();
+capaBase64Temp = null;
+var dica = document.getElementById('dica-upload-capa');
+if (dica) dica.textContent = '';
 formContainer.classList.remove('form-ativo');
 formContainer.setAttribute('aria-hidden', 'true');
 location.reload();
@@ -336,6 +475,11 @@ document.addEventListener('keydown', function(e) {
 if (e.key === 'Escape') {
 overlay.classList.remove('modal-ativo');
 overlay.setAttribute('aria-hidden', 'true');
+var formContainer = document.getElementById('container-form-adicionar');
+if (formContainer) {
+formContainer.classList.remove('form-ativo');
+formContainer.setAttribute('aria-hidden', 'true');
+}
 }
 });
 }
@@ -410,7 +554,7 @@ var ultimoSlug = null;
 var livrosComModal = document.querySelectorAll('.livro[data-slug]');
 livrosComModal.forEach(function(livro) {
 livro.addEventListener('click', function(e) {
-if (e.target.closest('a') || e.target.closest('.btn-remover-dinamico')) return;
+if (e.target.closest('a') || e.target.closest('.btn-remover-dinamico') || e.target.closest('.btn-editar-dinamico')) return;
 var slug = livro.getAttribute('data-slug');
 var total = parseInt(livro.getAttribute('data-total-paginas'), 10) || 0;
 var titulo = livro.querySelector('h3') ? livro.querySelector('h3').textContent.trim() : slug;
@@ -448,6 +592,15 @@ var statusEl = livroEl.querySelector('.status');
 if (barra) renderizarBarra(barra, pagina, t);
 if (paginaLabel && pagina > 0) paginaLabel.textContent = 'pag. ' + pagina;
 if (statusEl) atualizarStatus(statusEl, resultado.status);
+
+var itens = lerItens();
+if (itens[slug]) {
+itens[slug].status = resultado.status;
+if (resultado.status === 'lido' && itens[slug].totalPaginas) {
+}
+salvarItem(slug, itens[slug]);
+}
+
 overlay.classList.remove('modal-ativo');
 overlay.setAttribute('aria-hidden', 'true');
 };
