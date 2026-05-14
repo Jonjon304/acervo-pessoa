@@ -249,12 +249,12 @@
     </div>
   </footer>
 
-  <script src="./js/progresso.js" defer></script>
-  <script src="./js/modal.js" defer></script>
-  <script src="./js/exportar.js" defer></script>
-  <script src="./js/importar.js" defer></script>
-  <script src="./js/adicionar.js" defer></script>
-  <script defer>
+<script src="./js/progresso.js"></script>
+<script src="./js/modal.js"></script>
+<script src="./js/exportar.js"></script>
+<script src="./js/importar.js"></script>
+<script src="./js/adicionar.js"></script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
       var livros = document.querySelectorAll('.livro');
       livros.forEach(function(livro) {
@@ -295,40 +295,40 @@
       configurarImportar();
     }
 
-    var livrosComModal = document.querySelectorAll('.livro[data-slug]');
-    livrosComModal.forEach(function(livro) {
-      livro.addEventListener('click', function(e) {
-        if (e.target.closest('a')) return;
-        var slug = livro.getAttribute('data-slug');
-        var total = parseInt(livro.getAttribute('data-total-paginas'), 10) || 0;
-        var titulo = livro.querySelector('h3') ? livro.querySelector('h3').textContent.trim() : slug;
-        abrirModal(slug, titulo, total);
-      });
-    });
+var ultimoSlugClicado = null;
 
-    var ultimoSlugClicado = null;
-    livrosComModal.forEach(function(livro) {
-      livro.addEventListener('click', function(e) {
-        if (e.target.closest('a')) return;
-        ultimoSlugClicado = livro.getAttribute('data-slug');
-      });
-    });
+var livrosComModal = document.querySelectorAll('.livro[data-slug]');
+livrosComModal.forEach(function(livro) {
+livro.addEventListener('click', function(e) {
+if (e.target.closest('a') || e.target.closest('.btn-remover-dinamico')) return;
+var slug = livro.getAttribute('data-slug');
+var total = parseInt(livro.getAttribute('data-total-paginas'), 10) || 0;
+var titulo = livro.querySelector('h3') ? livro.querySelector('h3').textContent.trim() : slug;
+ultimoSlugClicado = slug;
+abrirModal(slug, titulo, total);
+configurarModalHome(slug);
+});
+});
 
-    configurarModalHome(ultimoSlugClicado);
-
-    var btnFlutuante = document.getElementById('btn-marcar-pagina');
-    if (btnFlutuante) {
-      btnFlutuante.addEventListener('click', function() {
-        var primeiroLivro = document.querySelector('.livro[data-slug]');
-        if (primeiroLivro) {
-          var slug = primeiroLivro.getAttribute('data-slug');
-          var total = parseInt(primeiroLivro.getAttribute('data-total-paginas'), 10) || 0;
-          var titulo = primeiroLivro.querySelector('h3') ? primeiroLivro.querySelector('h3').textContent.trim() : slug;
-          abrirModal(slug, titulo, total);
-          configurarModalHome(slug);
-        }
-      });
-    }
+var btnFlutuante = document.getElementById('btn-marcar-pagina');
+if (btnFlutuante) {
+btnFlutuante.addEventListener('click', function() {
+var slugAlvo = ultimoSlugClicado;
+if (!slugAlvo) {
+var primeiroLivro = document.querySelector('.livro[data-slug]');
+if (primeiroLivro) slugAlvo = primeiroLivro.getAttribute('data-slug');
+}
+if (slugAlvo) {
+var livroEl = document.querySelector('.livro[data-slug="' + slugAlvo + '"]');
+if (livroEl) {
+var total = parseInt(livroEl.getAttribute('data-total-paginas'), 10) || 0;
+var titulo = livroEl.querySelector('h3') ? livroEl.querySelector('h3').textContent.trim() : slugAlvo;
+abrirModal(slugAlvo, titulo, total);
+configurarModalHome(slugAlvo);
+}
+}
+});
+}
   });
 
   function configurarModalHome(slugAtual) {
