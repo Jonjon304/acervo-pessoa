@@ -36,43 +36,43 @@
 
 <div class="categorias-grid">
 
-<a href="./programacao.html" class="categoria-card">
+<a href="./programacao.html" class="categoria-card" data-categoria="programacao">
 <span class="categoria-icone" aria-hidden="true">&#128187;</span>
 <h2 class="categoria-nome">Programacao</h2>
 <p class="categoria-contagem">0 itens</p>
 </a>
 
-<a href="./design.html" class="categoria-card">
+<a href="./design.html" class="categoria-card" data-categoria="design">
 <span class="categoria-icone" aria-hidden="true">&#127912;</span>
 <h2 class="categoria-nome">Design</h2>
 <p class="categoria-contagem">0 itens</p>
 </a>
 
-<a href="./engenharia.html" class="categoria-card">
+<a href="./engenharia.html" class="categoria-card" data-categoria="engenharia">
 <span class="categoria-icone" aria-hidden="true">&#9881;</span>
 <h2 class="categoria-nome">Engenharia</h2>
 <p class="categoria-contagem">0 itens</p>
 </a>
 
-<a href="./literatura.html" class="categoria-card">
+<a href="./literatura.html" class="categoria-card" data-categoria="literatura">
 <span class="categoria-icone" aria-hidden="true">&#128218;</span>
 <h2 class="categoria-nome">Literatura</h2>
 <p class="categoria-contagem">0 itens</p>
 </a>
 
-<a href="./ciencia.html" class="categoria-card">
+<a href="./ciencia.html" class="categoria-card" data-categoria="ciencia">
 <span class="categoria-icone" aria-hidden="true">&#129514;</span>
 <h2 class="categoria-nome">Ciencia</h2>
 <p class="categoria-contagem">0 itens</p>
 </a>
 
-<a href="./negocios.html" class="categoria-card">
+<a href="./negocios.html" class="categoria-card" data-categoria="negocios">
 <span class="categoria-icone" aria-hidden="true">&#128188;</span>
 <h2 class="categoria-nome">Negocios</h2>
 <p class="categoria-contagem">0 itens</p>
 </a>
 
-<a href="./pessoal.html" class="categoria-card">
+<a href="./pessoal.html" class="categoria-card" data-categoria="pessoal">
 <span class="categoria-icone" aria-hidden="true">&#127793;</span>
 <h2 class="categoria-nome">Desenvolvimento Pessoal</h2>
 <p class="categoria-contagem">0 itens</p>
@@ -86,6 +86,43 @@
 <p>Acervo Pessoal &copy; 2025 &middot; Feito com HTML + CSS + JS</p>
 </div>
 </footer>
+
+<script>
+(function() {
+var CHAVE_ITENS = 'acervo-itens-dinamicos';
+
+function lsDisponivel() {
+try { var t = '__test__'; localStorage.setItem(t, '1'); localStorage.removeItem(t); return true; }
+catch (e) { return false; }
+}
+
+function lerItens() {
+if (!lsDisponivel()) return {};
+var d = localStorage.getItem(CHAVE_ITENS);
+return d ? JSON.parse(d) : {};
+}
+
+function atualizarContagens() {
+var itens = lerItens();
+var contagens = {};
+
+Object.keys(itens).forEach(function(slug) {
+var cat = itens[slug].categoria;
+if (cat) contagens[cat] = (contagens[cat] || 0) + 1;
+});
+
+var cards = document.querySelectorAll('.categoria-card[data-categoria]');
+cards.forEach(function(card) {
+var cat = card.getAttribute('data-categoria');
+var n = contagens[cat] || 0;
+var el = card.querySelector('.categoria-contagem');
+if (el) el.textContent = n === 1 ? '1 item' : n + ' itens';
+});
+}
+
+document.addEventListener('DOMContentLoaded', atualizarContagens);
+})();
+</script>
 
 </body>
 </html>

@@ -10,9 +10,9 @@
 <link rel="stylesheet" href="../css/global.css">
 <link rel="stylesheet" href="../css/estante.css">
 <link rel="stylesheet" href="../css/card.css">
+<link rel="stylesheet" href="../css/modal.css">
 <link rel="stylesheet" href="../css/categorias.css">
 <link rel="stylesheet" href="../css/responsivo.css">
-<link rel="stylesheet" href="../css/leitor.css">
 </head>
 <body>
 
@@ -36,17 +36,224 @@
 <h1>Programacao</h1>
 
 <section class="estante" aria-label="Livros de programacao">
-<div class="prateleira prateleira-wrap">
-<p>Nenhum item nesta categoria ainda. Adicione PDFs pelo botao <strong>+ Adicionar</strong> na pagina principal.</p>
+<div class="prateleira prateleira-wrap" id="prateleira-categoria">
+<p id="msg-vazio">Nenhum item nesta categoria ainda. Adicione PDFs pelo botao <strong>+ Adicionar</strong> na pagina principal.</p>
 </div>
 </section>
 </main>
+
+<div class="modal-overlay" id="modal-progresso" aria-hidden="true">
+<div class="modal-conteudo" role="dialog" aria-labelledby="modal-titulo" aria-modal="true">
+<h2 id="modal-titulo">Em qual pagina voce parou?</h2>
+<p class="modal-livro"></p>
+<div class="modal-input-grupo">
+<label for="input-pagina">Pagina:</label>
+<input type="number" id="input-pagina" min="0" placeholder="42">
+<span class="modal-total"></span>
+</div>
+<div class="modal-acoes">
+<button class="botao-secundario" id="modal-cancelar">Cancelar</button>
+<button class="botao-primario" id="modal-salvar">Salvar pagina</button>
+</div>
+</div>
+</div>
 
 <footer class="footer">
 <div class="container footer-interno">
 <p>Acervo Pessoal &copy; 2025 &middot; Feito com HTML + CSS + JS</p>
 </div>
 </footer>
+
+<script>
+(function() {
+var CHAVE_ITENS = 'acervo-itens-dinamicos';
+var CHAVE_PROGRESSO = 'acervo-progresso';
+var CATEGORIA = 'programacao';
+
+function lsDisponivel() {
+try { var t = '__test__'; localStorage.setItem(t, '1'); localStorage.removeItem(t); return true; }
+catch (e) { return false; }
+}
+
+function lerItens() {
+if (!lsDisponivel()) return {};
+var d = localStorage.getItem(CHAVE_ITENS);
+return d ? JSON.parse(d) : {};
+}
+
+function calcularPct(atual, total) {
+if (!total || total <= 0) return 0;
+return Math.round((atual / total) * 100);
+}
+
+function classePct(pct) {
+if (pct >= 76) return 'progresso-100';
+if (pct >= 51) return 'progresso-75';
+if (pct >= 26) return 'progresso-50';
+if (pct >= 1) return 'progresso-25';
+return 'progresso-0';
+}
+
+function criarCard(slug, item) {
+var prog = JSON.parse(localStorage.getItem(CHAVE_PROGRESSO) || '{}');
+var dp = prog[slug] || {};
+var pct = calcularPct(dp.paginaAtual || 0, item.totalPaginas || 1);
+var cls = classePct(pct);
+var status = dp.status || item.status || 'quero-ler';
+var pagAtual = dp.paginaAtual || 0;
+
+var sc = status === 'lido' ? 'status-lido' : status === 'lendo' ? 'status-lendo' : 'status-quero-ler';
+var st = status === 'lido' ? 'Lido' : status === 'lendo' ? 'Lendo' : 'Quero Ler';
+
+var capaSrc = item.capaBase64 || item.linkCapa || '';
+
+var el = document.createElement('article');
+el.className = 'livro livro-dinamico';
+el.setAttribute('data-slug', slug);
+if (item.totalPaginas) el.setAttribute('data-total-paginas', item.totalPaginas);
+
+var capaHtml;
+if (capaSrc) {
+capaHtml = '<img src="' + capaSrc + '" alt="' + item.titulo + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
++ '<div class="capa-placeholder capa-fallback" style="display:none"><span class="capa-titulo">' + item.titulo + '</span><span class="capa-autor">' + (item.autor || '') + '</span></div>';
+} else {
+capaHtml = '<div class="capa-placeholder"><span class="capa-titulo">' + item.titulo + '</span><span class="capa-autor">' + (item.autor || '') + '</span></div>';
+}
+
+el.innerHTML =
+'<div class="livro-capa">' + capaHtml +
+'<span class="status ' + sc + '">' + st + '</span></div>' +
+'<div class="livro-info"><h3><a href="' + item.linkPdf + '" target="_blank" rel="noopener">' + item.titulo + '</a></h3>' +
+(item.autor ? '<p class="livro-autor">' + item.autor + '</p>' : '') +
+(pagAtual > 0 ? '<div class="progresso ' + cls + '" aria-label="' + pct + '% lido"></div><span class="pagina-atual">pag. ' + pagAtual + '</span>' : '') +
+'</div>';
+
+return el;
+}
+
+function renderizar() {
+var prat = document.getElementById('prateleira-categoria');
+var msg = document.getElementById('msg-vazio');
+if (!prat) return;
+
+var itens = lerItens();
+var daCategoria = [];
+Object.keys(itens).forEach(function(slug) {
+if (itens[slug].categoria === CATEGORIA) {
+daCategoria.push({ slug: slug, item: itens[slug] });
+}
+});
+
+if (daCategoria.length === 0) {
+if (msg) msg.style.display = '';
+return;
+}
+
+if (msg) msg.style.display = 'none';
+
+daCategoria.forEach(function(entry) {
+prat.appendChild(criarCard(entry.slug, entry.item));
+});
+}
+
+function configurarModal() {
+var overlay = document.getElementById('modal-progresso');
+if (!overlay) return;
+
+var btnCancelar = overlay.querySelector('#modal-cancelar');
+if (btnCancelar) {
+btnCancelar.onclick = function() {
+overlay.classList.remove('modal-ativo');
+overlay.setAttribute('aria-hidden', 'true');
+};
+}
+
+overlay.addEventListener('click', function(e) {
+if (e.target === overlay) {
+overlay.classList.remove('modal-ativo');
+overlay.setAttribute('aria-hidden', 'true');
+}
+});
+
+document.addEventListener('keydown', function(e) {
+if (e.key === 'Escape') {
+overlay.classList.remove('modal-ativo');
+overlay.setAttribute('aria-hidden', 'true');
+}
+});
+
+var ultimoSlug = null;
+
+document.addEventListener('click', function(e) {
+var livro = e.target.closest('.livro-dinamico[data-slug]');
+if (!livro) return;
+if (e.target.closest('a')) return;
+
+var slug = livro.getAttribute('data-slug');
+var total = parseInt(livro.getAttribute('data-total-paginas'), 10) || 0;
+var titulo = livro.querySelector('h3') ? livro.querySelector('h3').textContent.trim() : slug;
+ultimoSlug = slug;
+
+var tituloEl = overlay.querySelector('.modal-livro');
+var inputEl = overlay.querySelector('#input-pagina');
+var totalEl = overlay.querySelector('.modal-total');
+if (tituloEl) tituloEl.textContent = titulo;
+if (inputEl) {
+inputEl.max = total || 9999;
+inputEl.value = '';
+var prog = JSON.parse(localStorage.getItem(CHAVE_PROGRESSO) || '{}');
+if (prog[slug]) inputEl.value = prog[slug].paginaAtual || '';
+}
+if (totalEl) totalEl.textContent = total ? ('de ' + total) : '';
+overlay.classList.add('modal-ativo');
+overlay.setAttribute('aria-hidden', 'false');
+if (inputEl) inputEl.focus();
+
+var btnSalvar = overlay.querySelector('#modal-salvar');
+if (btnSalvar) {
+btnSalvar.onclick = function() {
+var pagina = parseInt(inputEl.value, 10);
+if (isNaN(pagina) || pagina < 0) { inputEl.style.borderColor = '#e94560'; return; }
+
+var prog = JSON.parse(localStorage.getItem(CHAVE_PROGRESSO) || '{}');
+var st;
+if (pagina <= 0) st = 'quero-ler';
+else if (pagina >= total) st = 'lido';
+else st = 'lendo';
+
+prog[slug] = { paginaAtual: pagina, totalPaginas: total, status: st, dataAtualizacao: new Date().toISOString().split('T')[0] };
+localStorage.setItem(CHAVE_PROGRESSO, JSON.stringify(prog));
+
+var barra = livro.querySelector('.progresso');
+var paginaLabel = livro.querySelector('.pagina-atual');
+var statusEl = livro.querySelector('.status');
+
+if (barra) {
+var pct = calcularPct(pagina, total);
+barra.className = 'progresso ' + classePct(pct);
+barra.setAttribute('aria-label', pct + '% lido');
+}
+if (paginaLabel && pagina > 0) paginaLabel.textContent = 'pag. ' + pagina;
+if (statusEl) {
+statusEl.className = 'status';
+if (st === 'lido') { statusEl.classList.add('status-lido'); statusEl.textContent = 'Lido'; }
+else if (st === 'lendo') { statusEl.classList.add('status-lendo'); statusEl.textContent = 'Lendo'; }
+else { statusEl.classList.add('status-quero-ler'); statusEl.textContent = 'Quero Ler'; }
+}
+
+overlay.classList.remove('modal-ativo');
+overlay.setAttribute('aria-hidden', 'true');
+};
+}
+});
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+renderizar();
+configurarModal();
+});
+})();
+</script>
 
 </body>
 </html>

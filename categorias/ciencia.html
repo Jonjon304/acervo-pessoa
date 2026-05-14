@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Livros de Desenvolvimento Pessoal no Acervo Pessoal.">
-<title>Desenvolvimento Pessoal - Acervo Pessoal</title>
+<meta name="description" content="Livros de Ciencia no Acervo Pessoal.">
+<title>Ciencia - Acervo Pessoal</title>
 <link rel="stylesheet" href="../css/reset.css">
 <link rel="stylesheet" href="../css/variaveis.css">
 <link rel="stylesheet" href="../css/global.css">
@@ -30,12 +30,12 @@
 
 <main class="main container">
 <div class="breadcrumb">
-<a href="../index.html">Home</a> <span>&#8250;</span> <a href="./index.html">Categorias</a> <span>&#8250;</span> Desenvolvimento Pessoal
+<a href="../index.html">Home</a> <span>&#8250;</span> <a href="./index.html">Categorias</a> <span>&#8250;</span> Ciencia
 </div>
 
-<h1>Desenvolvimento Pessoal</h1>
+<h1>Ciencia</h1>
 
-<section class="estante" aria-label="Livros de desenvolvimento pessoal">
+<section class="estante" aria-label="Livros de ciencia">
 <div class="prateleira prateleira-wrap" id="prateleira-categoria">
 <p id="msg-vazio">Nenhum item nesta categoria ainda. Adicione PDFs pelo botao <strong>+ Adicionar</strong> na pagina principal.</p>
 </div>
@@ -68,7 +68,7 @@
 (function() {
 var CHAVE_ITENS = 'acervo-itens-dinamicos';
 var CHAVE_PROGRESSO = 'acervo-progresso';
-var CATEGORIA = 'pessoal';
+var CATEGORIA = 'ciencia';
 
 function lsDisponivel() {
 try { var t = '__test__'; localStorage.setItem(t, '1'); localStorage.removeItem(t); return true; }
@@ -182,8 +182,6 @@ overlay.setAttribute('aria-hidden', 'true');
 }
 });
 
-var ultimoSlug = null;
-
 document.addEventListener('click', function(e) {
 var livro = e.target.closest('.livro-dinamico[data-slug]');
 if (!livro) return;
@@ -192,7 +190,6 @@ if (e.target.closest('a')) return;
 var slug = livro.getAttribute('data-slug');
 var total = parseInt(livro.getAttribute('data-total-paginas'), 10) || 0;
 var titulo = livro.querySelector('h3') ? livro.querySelector('h3').textContent.trim() : slug;
-ultimoSlug = slug;
 
 var tituloEl = overlay.querySelector('.modal-livro');
 var inputEl = overlay.querySelector('#input-pagina');
