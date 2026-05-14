@@ -1,302 +1,412 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Acervo Pessoal - Biblioteca digital de PDFs com estantes virtuais e acompanhamento de leitura.">
-  <title>Acervo Pessoal - Biblioteca Digital</title>
-  <link rel="stylesheet" href="./css/reset.css">
-  <link rel="stylesheet" href="./css/variaveis.css">
-  <link rel="stylesheet" href="./css/global.css">
-  <link rel="stylesheet" href="./css/estante.css">
-  <link rel="stylesheet" href="./css/card.css">
-  <link rel="stylesheet" href="./css/modal.css">
-  <link rel="stylesheet" href="./css/form-adicionar.css">
-  <link rel="stylesheet" href="./css/responsivo.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Acervo Pessoal - Biblioteca digital de PDFs com estantes virtuais e acompanhamento de leitura.">
+<title>Acervo Pessoal - Biblioteca Digital</title>
+<link rel="stylesheet" href="./css/reset.css">
+<link rel="stylesheet" href="./css/variaveis.css">
+<link rel="stylesheet" href="./css/global.css">
+<link rel="stylesheet" href="./css/estante.css">
+<link rel="stylesheet" href="./css/card.css">
+<link rel="stylesheet" href="./css/modal.css">
+<link rel="stylesheet" href="./css/form-adicionar.css">
+<link rel="stylesheet" href="./css/responsivo.css">
 </head>
 <body>
 
-  <header class="header">
-    <div class="container header-interno">
-      <a href="./index.html" class="header-logo" aria-label="Pagina inicial">
-        <span class="logo-icone" aria-hidden="true">&#128218;</span>
-        <span class="logo-texto">Acervo Pessoal</span>
-      </a>
-      <nav class="header-nav" aria-label="Navegacao principal">
-        <a href="./categorias/index.html" class="nav-link">Categorias</a>
-        <button id="btn-adicionar-pdf" class="nav-btn-adicionar" aria-label="Adicionar PDF">
-          <span aria-hidden="true">+</span> Adicionar
-        </button>
-        <div class="nav-sincronizar">
-          <button id="btn-exportar" class="nav-btn-sinc" aria-label="Exportar progresso">
-            <span aria-hidden="true">&#128229;</span> Exportar
-          </button>
-          <label for="input-importar" class="nav-btn-sinc" aria-label="Importar progresso">
-            <span aria-hidden="true">&#128228;</span> Importar
-          </label>
-          <input type="file" id="input-importar" accept=".json" class="visually-hidden">
-        </div>
-      </nav>
-    </div>
-  </header>
+<header class="header">
+<div class="container header-interno">
+<a href="./index.html" class="header-logo" aria-label="Pagina inicial">
+<span class="logo-icone" aria-hidden="true">&#128218;</span>
+<span class="logo-texto">Acervo Pessoal</span>
+</a>
+<nav class="header-nav" aria-label="Navegacao principal">
+<a href="./categorias/index.html" class="nav-link">Categorias</a>
+<button id="btn-adicionar-pdf" class="nav-btn-adicionar" aria-label="Adicionar PDF">
+<span aria-hidden="true">+</span> Adicionar
+</button>
+<div class="nav-sincronizar">
+<button id="btn-exportar" class="nav-btn-sinc" aria-label="Exportar progresso">
+<span aria-hidden="true">&#128229;</span> Exportar
+</button>
+<label for="input-importar" class="nav-btn-sinc" aria-label="Importar progresso">
+<span aria-hidden="true">&#128228;</span> Importar
+</label>
+<input type="file" id="input-importar" accept=".json" class="visually-hidden">
+</div>
+</nav>
+</div>
+</header>
 
-  <main class="main container">
+<main class="main container">
 
-    <div id="container-form-adicionar" class="container-form-adicionar" aria-hidden="true">
-      <form id="form-adicionar-pdf" class="form-adicionar">
-        <h2>Adicionar PDF</h2>
+<div id="container-form-adicionar" class="container-form-adicionar" aria-hidden="true">
+<form id="form-adicionar-pdf" class="form-adicionar">
+<h2>Adicionar PDF</h2>
 
-        <div class="form-grupo">
-          <label for="input-titulo">Titulo *</label>
-          <input type="text" id="input-titulo" required placeholder="Ex: Clean Code">
-        </div>
+<div class="form-grupo">
+<label for="input-titulo">Titulo *</label>
+<input type="text" id="input-titulo" required placeholder="Ex: Clean Code">
+</div>
 
-        <div class="form-grupo">
-          <label for="input-autor">Autor</label>
-          <input type="text" id="input-autor" placeholder="Ex: Robert C. Martin">
-        </div>
+<div class="form-grupo">
+<label for="input-autor">Autor</label>
+<input type="text" id="input-autor" placeholder="Ex: Robert C. Martin">
+</div>
 
-        <div class="form-grupo">
-          <label for="input-categoria">Categoria *</label>
-          <select id="input-categoria" required>
-            <option value="programacao">Programacao</option>
-            <option value="design">Design</option>
-            <option value="engenharia">Engenharia</option>
-            <option value="literatura">Literatura</option>
-            <option value="ciencia">Ciencia</option>
-            <option value="negocios">Negocios</option>
-            <option value="pessoal">Desenvolvimento Pessoal</option>
-          </select>
-        </div>
+<div class="form-grupo">
+<label for="input-categoria">Categoria *</label>
+<select id="input-categoria" required>
+<option value="programacao">Programacao</option>
+<option value="design">Design</option>
+<option value="engenharia">Engenharia</option>
+<option value="literatura">Literatura</option>
+<option value="ciencia">Ciencia</option>
+<option value="negocios">Negocios</option>
+<option value="pessoal">Desenvolvimento Pessoal</option>
+</select>
+</div>
 
-        <div class="form-grupo">
-          <label for="input-link-pdf">Link do PDF * (Google Drive, Dropbox, etc)</label>
-          <input type="url" id="input-link-pdf" required placeholder="https://drive.google.com/file/d/...">
-        </div>
+<div class="form-grupo">
+<label for="input-link-pdf">Link do PDF * (Google Drive, Dropbox, etc)</label>
+<input type="url" id="input-link-pdf" required placeholder="https://drive.google.com/file/d/...">
+</div>
 
-        <div class="form-grupo">
-          <label for="input-total-paginas">Total de Paginas</label>
-          <input type="number" id="input-total-paginas" min="1" placeholder="200">
-        </div>
+<div class="form-grupo">
+<label for="input-total-paginas">Total de Paginas</label>
+<input type="number" id="input-total-paginas" min="1" placeholder="200">
+</div>
 
-        <div class="form-grupo">
-          <label for="input-link-capa">Link da Capa (opcional)</label>
-          <input type="url" id="input-link-capa" placeholder="https://...">
-        </div>
+<div class="form-grupo">
+<label for="input-link-capa">Link da Capa (opcional)</label>
+<input type="url" id="input-link-capa" placeholder="https://...">
+</div>
 
-        <div class="form-acoes">
-          <button type="submit" class="botao-primario">Adicionar ao Acervo</button>
-          <button type="button" class="botao-secundario" id="btn-cancelar-adicao">Cancelar</button>
-        </div>
-      </form>
-    </div>
+<div class="form-acoes">
+<button type="submit" class="botao-primario">Adicionar ao Acervo</button>
+<button type="button" class="botao-secundario" id="btn-cancelar-adicao">Cancelar</button>
+</div>
+</form>
+</div>
 
-    <section class="estante" aria-label="Livros que estou lendo">
-      <h2 class="estante-titulo">Lendo Agora <a href="#" class="ver-todos">ver todos &#8250;</a></h2>
-      <div class="prateleira">
+<div id="itens-dinamicos-container"></div>
 
-        <article class="livro" data-slug="clean-code" data-total-paginas="464">
-          <div class="livro-capa">
-            <div class="capa-placeholder">
-              <span class="capa-titulo">Clean Code</span>
-              <span class="capa-autor">Robert C. Martin</span>
-            </div>
-            <span class="status status-lendo">Lendo</span>
-          </div>
-          <div class="livro-info">
-            <h3><a href="./acervo/programacao/clean-code.html">Clean Code</a></h3>
-            <p class="livro-autor">Robert C. Martin</p>
-            <div class="progresso progresso-0" aria-label="0% lido"></div>
-            <span class="pagina-atual"></span>
-          </div>
-        </article>
+</main>
 
-        <article class="livro" data-slug="pragmatic-programmer" data-total-paginas="352">
-          <div class="livro-capa">
-            <div class="capa-placeholder">
-              <span class="capa-titulo">The Pragmatic Programmer</span>
-              <span class="capa-autor">Hunt &amp; Thomas</span>
-            </div>
-            <span class="status status-lendo">Lendo</span>
-          </div>
-          <div class="livro-info">
-            <h3><a href="./acervo/programacao/pragmatic-programmer.html">The Pragmatic Programmer</a></h3>
-            <p class="livro-autor">Hunt &amp; Thomas</p>
-            <div class="progresso progresso-0" aria-label="0% lido"></div>
-            <span class="pagina-atual"></span>
-          </div>
-        </article>
+<div class="modal-overlay" id="modal-progresso" aria-hidden="true">
+<div class="modal-conteudo" role="dialog" aria-labelledby="modal-titulo" aria-modal="true">
+<h2 id="modal-titulo">Em qual pagina voce parou?</h2>
+<p class="modal-livro"></p>
+<div class="modal-input-grupo">
+<label for="input-pagina">Pagina:</label>
+<input type="number" id="input-pagina" min="0" placeholder="42">
+<span class="modal-total"></span>
+</div>
+<div class="modal-acoes">
+<button class="botao-secundario" id="modal-cancelar">Cancelar</button>
+<button class="botao-primario" id="modal-salvar">Salvar pagina</button>
+</div>
+</div>
+</div>
 
-        <article class="livro" data-slug="dont-make-me-think" data-total-paginas="216">
-          <div class="livro-capa">
-            <div class="capa-placeholder">
-              <span class="capa-titulo">Don't Make Me Think</span>
-              <span class="capa-autor">Steve Krug</span>
-            </div>
-            <span class="status status-lendo">Lendo</span>
-          </div>
-          <div class="livro-info">
-            <h3><a href="./acervo/design/dont-make-me-think.html">Don't Make Me Think</a></h3>
-            <p class="livro-autor">Steve Krug</p>
-            <div class="progresso progresso-0" aria-label="0% lido"></div>
-            <span class="pagina-atual"></span>
-          </div>
-        </article>
+<button class="btn-flutuante" id="btn-marcar-pagina" aria-label="Marcar pagina" title="Marcar pagina de leitura">
+&#128209;
+</button>
 
-      </div>
-    </section>
+<footer class="footer">
+<div class="container footer-interno">
+<p>Acervo Pessoal &copy; 2025 &middot; Feito com HTML + CSS + JS</p>
+</div>
+</footer>
 
-    <section class="estante" aria-label="Livros que quero ler">
-      <h2 class="estante-titulo">Quero Ler <a href="#" class="ver-todos">ver todos &#8250;</a></h2>
-      <div class="prateleira">
-
-        <article class="livro" data-slug="design-patterns" data-total-paginas="395">
-          <div class="livro-capa">
-            <div class="capa-placeholder">
-              <span class="capa-titulo">Design Patterns</span>
-              <span class="capa-autor">Gang of Four</span>
-            </div>
-            <span class="status status-quero-ler">Quero Ler</span>
-          </div>
-          <div class="livro-info">
-            <h3><a href="./acervo/programacao/design-patterns.html">Design Patterns</a></h3>
-            <p class="livro-autor">Gang of Four</p>
-          </div>
-        </article>
-
-        <article class="livro" data-slug="refactoring" data-total-paginas="448">
-          <div class="livro-capa">
-            <div class="capa-placeholder">
-              <span class="capa-titulo">Refactoring</span>
-              <span class="capa-autor">Martin Fowler</span>
-            </div>
-            <span class="status status-quero-ler">Quero Ler</span>
-          </div>
-          <div class="livro-info">
-            <h3><a href="./acervo/programacao/refactoring.html">Refactoring</a></h3>
-            <p class="livro-autor">Martin Fowler</p>
-          </div>
-        </article>
-
-        <article class="livro" data-slug="atomic-habits" data-total-paginas="320">
-          <div class="livro-capa">
-            <div class="capa-placeholder">
-              <span class="capa-titulo">Atomic Habits</span>
-              <span class="capa-autor">James Clear</span>
-            </div>
-            <span class="status status-quero-ler">Quero Ler</span>
-          </div>
-          <div class="livro-info">
-            <h3><a href="./acervo/pessoal/atomic-habits.html">Atomic Habits</a></h3>
-            <p class="livro-autor">James Clear</p>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <section class="estante" aria-label="Livros ja lidos">
-      <h2 class="estante-titulo">Ja Li <a href="#" class="ver-todos">ver todos &#8250;</a></h2>
-      <div class="prateleira">
-
-        <article class="livro" data-slug="eloquent-javascript" data-total-paginas="472">
-          <div class="livro-capa">
-            <div class="capa-placeholder">
-              <span class="capa-titulo">Eloquent JavaScript</span>
-              <span class="capa-autor">Marijn Haverbeke</span>
-            </div>
-            <span class="status status-lido">Lido</span>
-          </div>
-          <div class="livro-info">
-            <h3><a href="./acervo/programacao/eloquent-javascript.html">Eloquent JavaScript</a></h3>
-            <p class="livro-autor">Marijn Haverbeke</p>
-            <div class="avaliacao" aria-label="Avaliacao: 4 de 5 estrelas">
-              &#9733;&#9733;&#9733;&#9733;<span class="vazia">&#9733;</span>
-            </div>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <div id="itens-dinamicos-container"></div>
-
-  </main>
-
-  <div class="modal-overlay" id="modal-progresso" aria-hidden="true">
-    <div class="modal-conteudo" role="dialog" aria-labelledby="modal-titulo" aria-modal="true">
-      <h2 id="modal-titulo">Em qual pagina voce parou?</h2>
-      <p class="modal-livro"></p>
-      <div class="modal-input-grupo">
-        <label for="input-pagina">Pagina:</label>
-        <input type="number" id="input-pagina" min="0" placeholder="42">
-        <span class="modal-total"></span>
-      </div>
-      <div class="modal-acoes">
-        <button class="botao-secundario" id="modal-cancelar">Cancelar</button>
-        <button class="botao-primario" id="modal-salvar">Salvar pagina</button>
-      </div>
-    </div>
-  </div>
-
-  <button class="btn-flutuante" id="btn-marcar-pagina" aria-label="Marcar pagina" title="Marcar pagina de leitura">
-    &#128209;
-  </button>
-
-  <footer class="footer">
-    <div class="container footer-interno">
-      <p>Acervo Pessoal &copy; 2025 &middot; Feito com HTML + CSS + JS</p>
-    </div>
-  </footer>
-
-<script src="./js/progresso.js"></script>
-<script src="./js/modal.js"></script>
-<script src="./js/exportar.js"></script>
-<script src="./js/importar.js"></script>
-<script src="./js/adicionar.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var livros = document.querySelectorAll('.livro');
-      livros.forEach(function(livro) {
-        var slug = livro.getAttribute('data-slug');
-        var total = parseInt(livro.getAttribute('data-total-paginas'), 10) || 0;
-        var dados = lerProgressoItem(slug);
+(function() {
+var CHAVE_ITENS = 'acervo-itens-dinamicos';
+var CHAVE_PROGRESSO = 'acervo-progresso';
 
-        if (dados) {
-          var barra = livro.querySelector('.progresso');
-          var paginaLabel = livro.querySelector('.pagina-atual');
-          var statusEl = livro.querySelector('.status');
+function lsDisponivel() {
+try {
+var t = '__test__';
+localStorage.setItem(t, '1');
+localStorage.removeItem(t);
+return true;
+} catch (e) { return false; }
+}
 
-          if (barra) {
-            renderizarBarraProgresso(barra, dados.paginaAtual, dados.totalPaginas);
-          }
-          if (paginaLabel && dados.paginaAtual > 0) {
-            paginaLabel.textContent = 'pag. ' + dados.paginaAtual;
-          }
-          if (statusEl) {
-            atualizarStatusBadge(statusEl, dados.status);
-          }
-        }
-      });
+function lerItens() {
+if (!lsDisponivel()) return {};
+var d = localStorage.getItem(CHAVE_ITENS);
+return d ? JSON.parse(d) : {};
+}
 
-      if (typeof renderizarItensDinamicos === 'function') {
-        renderizarItensDinamicos('#itens-dinamicos-container');
-      }
+function salvarItem(slug, item) {
+if (!lsDisponivel()) {
+alert('localStorage indisponivel. Desative o modo privado do navegador.');
+return false;
+}
+var itens = lerItens();
+itens[slug] = item;
+localStorage.setItem(CHAVE_ITENS, JSON.stringify(itens));
+return true;
+}
 
-      if (typeof configurarFormularioAdicionar === 'function') {
-        configurarFormularioAdicionar();
-      }
+function removerItem(slug) {
+var itens = lerItens();
+delete itens[slug];
+localStorage.setItem(CHAVE_ITENS, JSON.stringify(itens));
+var prog = JSON.parse(localStorage.getItem(CHAVE_PROGRESSO) || '{}');
+delete prog[slug];
+localStorage.setItem(CHAVE_PROGRESSO, JSON.stringify(prog));
+}
 
-      if (typeof configurarExportar === 'function') {
-        configurarExportar();
-      }
+function gerarSlug(titulo) {
+return titulo.toLowerCase().normalize('NFD')
+.replace(/[\u0300-\u036f]/g, '')
+.replace(/[^a-z0-9]+/g, '-')
+.replace(/^-|-$/g, '');
+}
 
-    if (typeof configurarImportar === 'function') {
-      configurarImportar();
-    }
+function calcularPct(atual, total) {
+if (!total || total <= 0) return 0;
+return Math.round((atual / total) * 100);
+}
 
-var ultimoSlugClicado = null;
+function classePct(pct) {
+if (pct >= 76) return 'progresso-100';
+if (pct >= 51) return 'progresso-75';
+if (pct >= 26) return 'progresso-50';
+if (pct >= 1) return 'progresso-25';
+return 'progresso-0';
+}
 
+function criarCard(slug, item) {
+var prog = JSON.parse(localStorage.getItem(CHAVE_PROGRESSO) || '{}');
+var dp = prog[slug] || {};
+var pct = calcularPct(dp.paginaAtual || 0, item.totalPaginas || 1);
+var cls = classePct(pct);
+var status = dp.status || item.status || 'quero-ler';
+var pagAtual = dp.paginaAtual || 0;
+
+var sc = status === 'lido' ? 'status-lido' : status === 'lendo' ? 'status-lendo' : 'status-quero-ler';
+var st = status === 'lido' ? 'Lido' : status === 'lendo' ? 'Lendo' : 'Quero Ler';
+
+var el = document.createElement('article');
+el.className = 'livro livro-dinamico';
+el.setAttribute('data-slug', slug);
+if (item.totalPaginas) el.setAttribute('data-total-paginas', item.totalPaginas);
+
+el.innerHTML =
+'<div class="livro-capa">' +
+(item.linkCapa
+? '<img src="' + item.linkCapa + '" alt="' + item.titulo + '" loading="lazy">'
+: '<div class="capa-placeholder"><span class="capa-titulo">' + item.titulo + '</span><span class="capa-autor">' + (item.autor || '') + '</span></div>') +
+'<span class="status ' + sc + '">' + st + '</span>' +
+'<span class="status status-externo">Externo</span></div>' +
+'<div class="livro-info"><h3><a href="' + item.linkPdf + '" target="_blank" rel="noopener">' + item.titulo + '</a></h3>' +
+(item.autor ? '<p class="livro-autor">' + item.autor + '</p>' : '') +
+(pagAtual > 0 ? '<div class="progresso ' + cls + '" aria-label="' + pct + '% lido"></div><span class="pagina-atual">pag. ' + pagAtual + '</span>' : '') +
+'</div>' +
+'<button class="btn-remover-dinamico" data-slug="' + slug + '" aria-label="Remover ' + item.titulo + '" title="Remover">&times;</button>';
+
+return el;
+}
+
+function renderizarDinamicos() {
+var container = document.getElementById('itens-dinamicos-container');
+if (!container) return;
+
+var itens = lerItens();
+var slugs = Object.keys(itens);
+if (slugs.length === 0) return;
+
+var secao = document.createElement('section');
+secao.className = 'estante';
+secao.setAttribute('aria-label', 'PDFs adicionados via link externo');
+secao.innerHTML = '<h2>Adicionados Recentemente</h2>';
+
+var prat = document.createElement('div');
+prat.className = 'prateleira';
+
+slugs.forEach(function(slug) {
+prat.appendChild(criarCard(slug, itens[slug]));
+});
+
+secao.appendChild(prat);
+container.appendChild(secao);
+
+prat.querySelectorAll('.btn-remover-dinamico').forEach(function(btn) {
+btn.addEventListener('click', function(e) {
+e.stopPropagation();
+var s = btn.getAttribute('data-slug');
+if (confirm('Remover "' + itens[s].titulo + '" do acervo?')) {
+removerItem(s);
+location.reload();
+}
+});
+});
+}
+
+function configurarFormulario() {
+var form = document.getElementById('form-adicionar-pdf');
+var btnAbrir = document.getElementById('btn-adicionar-pdf');
+var btnCancelar = document.getElementById('btn-cancelar-adicao');
+var formContainer = document.getElementById('container-form-adicionar');
+
+if (!form || !formContainer || !btnAbrir) return;
+
+btnAbrir.addEventListener('click', function(e) {
+e.preventDefault();
+e.stopPropagation();
+var estaAtivo = formContainer.classList.toggle('form-ativo');
+formContainer.setAttribute('aria-hidden', String(!estaAtivo));
+if (estaAtivo) {
+setTimeout(function() {
+formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+var inp = formContainer.querySelector('input');
+if (inp) inp.focus();
+}, 50);
+}
+});
+
+if (btnCancelar) {
+btnCancelar.addEventListener('click', function() {
+formContainer.classList.remove('form-ativo');
+formContainer.setAttribute('aria-hidden', 'true');
+form.reset();
+});
+}
+
+form.addEventListener('submit', function(e) {
+e.preventDefault();
+
+var titulo = document.getElementById('input-titulo').value.trim();
+var autor = document.getElementById('input-autor').value.trim();
+var categoria = document.getElementById('input-categoria').value;
+var linkPdf = document.getElementById('input-link-pdf').value.trim();
+var totalPaginas = parseInt(document.getElementById('input-total-paginas').value, 10) || 0;
+var linkCapa = document.getElementById('input-link-capa').value.trim();
+
+if (!titulo || !linkPdf) return;
+
+var slug = gerarSlug(titulo);
+
+var item = {
+titulo: titulo,
+autor: autor,
+categoria: categoria,
+linkPdf: linkPdf,
+linkCapa: linkCapa,
+totalPaginas: totalPaginas,
+status: 'quero-ler',
+dataAdicao: new Date().toISOString().split('T')[0],
+tipo: 'dinamico'
+};
+
+if (!salvarItem(slug, item)) return;
+
+form.reset();
+formContainer.classList.remove('form-ativo');
+formContainer.setAttribute('aria-hidden', 'true');
+location.reload();
+});
+}
+
+function configurarModalHome() {
+var overlay = document.getElementById('modal-progresso');
+if (!overlay) return;
+
+var btnCancelar = overlay.querySelector('#modal-cancelar');
+if (btnCancelar) {
+btnCancelar.onclick = function() {
+overlay.classList.remove('modal-ativo');
+overlay.setAttribute('aria-hidden', 'true');
+};
+}
+
+overlay.addEventListener('click', function(e) {
+if (e.target === overlay) {
+overlay.classList.remove('modal-ativo');
+overlay.setAttribute('aria-hidden', 'true');
+}
+});
+
+document.addEventListener('keydown', function(e) {
+if (e.key === 'Escape') {
+overlay.classList.remove('modal-ativo');
+overlay.setAttribute('aria-hidden', 'true');
+}
+});
+}
+
+function lerProgressoItem(slug) {
+var dados = localStorage.getItem(CHAVE_PROGRESSO);
+if (!dados) return null;
+var prog = JSON.parse(dados);
+return prog[slug] || null;
+}
+
+function salvarProgresso(slug, paginaAtual, totalPaginas) {
+var dados = localStorage.getItem(CHAVE_PROGRESSO);
+var prog = dados ? JSON.parse(dados) : {};
+
+var status;
+if (paginaAtual <= 0) status = 'quero-ler';
+else if (paginaAtual >= totalPaginas) status = 'lido';
+else status = 'lendo';
+
+prog[slug] = {
+paginaAtual: paginaAtual,
+totalPaginas: totalPaginas,
+status: status,
+dataAtualizacao: new Date().toISOString().split('T')[0]
+};
+localStorage.setItem(CHAVE_PROGRESSO, JSON.stringify(prog));
+return prog[slug];
+}
+
+function renderizarBarra(elemento, paginaAtual, totalPaginas) {
+if (!elemento) return;
+var pct = calcularPct(paginaAtual, totalPaginas);
+var cls = classePct(pct);
+elemento.className = 'progresso ' + cls;
+elemento.setAttribute('aria-label', pct + '% lido');
+var pagLabel = elemento.parentElement ? elemento.parentElement.querySelector('.pagina-atual') : null;
+if (pagLabel && totalPaginas) pagLabel.textContent = 'pag. ' + paginaAtual;
+}
+
+function atualizarStatus(elemento, status) {
+if (!elemento) return;
+elemento.className = 'status';
+if (status === 'lido') { elemento.classList.add('status-lido'); elemento.textContent = 'Lido'; }
+else if (status === 'lendo') { elemento.classList.add('status-lendo'); elemento.textContent = 'Lendo'; }
+else { elemento.classList.add('status-quero-ler'); elemento.textContent = 'Quero Ler'; }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+var livros = document.querySelectorAll('.livro');
+livros.forEach(function(livro) {
+var slug = livro.getAttribute('data-slug');
+var total = parseInt(livro.getAttribute('data-total-paginas'), 10) || 0;
+var dados = lerProgressoItem(slug);
+
+if (dados) {
+var barra = livro.querySelector('.progresso');
+var paginaLabel = livro.querySelector('.pagina-atual');
+var statusEl = livro.querySelector('.status');
+
+if (barra) renderizarBarra(barra, dados.paginaAtual, dados.totalPaginas);
+if (paginaLabel && dados.paginaAtual > 0) paginaLabel.textContent = 'pag. ' + dados.paginaAtual;
+if (statusEl) atualizarStatus(statusEl, dados.status);
+}
+});
+
+renderizarDinamicos();
+configurarFormulario();
+configurarModalHome();
+
+var ultimoSlug = null;
 var livrosComModal = document.querySelectorAll('.livro[data-slug]');
 livrosComModal.forEach(function(livro) {
 livro.addEventListener('click', function(e) {
@@ -304,67 +414,70 @@ if (e.target.closest('a') || e.target.closest('.btn-remover-dinamico')) return;
 var slug = livro.getAttribute('data-slug');
 var total = parseInt(livro.getAttribute('data-total-paginas'), 10) || 0;
 var titulo = livro.querySelector('h3') ? livro.querySelector('h3').textContent.trim() : slug;
-ultimoSlugClicado = slug;
-abrirModal(slug, titulo, total);
-configurarModalHome(slug);
+ultimoSlug = slug;
+
+var overlay = document.getElementById('modal-progresso');
+if (!overlay) return;
+var tituloEl = overlay.querySelector('.modal-livro');
+var inputEl = overlay.querySelector('#input-pagina');
+var totalEl = overlay.querySelector('.modal-total');
+if (tituloEl) tituloEl.textContent = titulo;
+if (inputEl) {
+inputEl.max = total || 9999;
+inputEl.value = '';
+var prog = JSON.parse(localStorage.getItem(CHAVE_PROGRESSO) || '{}');
+if (prog[slug]) inputEl.value = prog[slug].paginaAtual || '';
+}
+if (totalEl) totalEl.textContent = total ? ('de ' + total) : '';
+overlay.classList.add('modal-ativo');
+overlay.setAttribute('aria-hidden', 'false');
+if (inputEl) inputEl.focus();
+
+var btnSalvar = overlay.querySelector('#modal-salvar');
+if (btnSalvar) {
+btnSalvar.onclick = function() {
+var pagina = parseInt(inputEl.value, 10);
+if (isNaN(pagina) || pagina < 0) { inputEl.style.borderColor = '#e94560'; return; }
+var livroEl = document.querySelector('.livro[data-slug="' + slug + '"]');
+if (!livroEl) return;
+var t = parseInt(livroEl.getAttribute('data-total-paginas'), 10) || 0;
+var resultado = salvarProgresso(slug, pagina, t);
+var barra = livroEl.querySelector('.progresso');
+var paginaLabel = livroEl.querySelector('.pagina-atual');
+var statusEl = livroEl.querySelector('.status');
+if (barra) renderizarBarra(barra, pagina, t);
+if (paginaLabel && pagina > 0) paginaLabel.textContent = 'pag. ' + pagina;
+if (statusEl) atualizarStatus(statusEl, resultado.status);
+overlay.classList.remove('modal-ativo');
+overlay.setAttribute('aria-hidden', 'true');
+};
+}
 });
 });
 
 var btnFlutuante = document.getElementById('btn-marcar-pagina');
 if (btnFlutuante) {
 btnFlutuante.addEventListener('click', function() {
-var slugAlvo = ultimoSlugClicado;
+var slugAlvo = ultimoSlug;
 if (!slugAlvo) {
-var primeiroLivro = document.querySelector('.livro[data-slug]');
-if (primeiroLivro) slugAlvo = primeiroLivro.getAttribute('data-slug');
+var primeiro = document.querySelector('.livro[data-slug]');
+if (primeiro) slugAlvo = primeiro.getAttribute('data-slug');
 }
 if (slugAlvo) {
 var livroEl = document.querySelector('.livro[data-slug="' + slugAlvo + '"]');
-if (livroEl) {
-var total = parseInt(livroEl.getAttribute('data-total-paginas'), 10) || 0;
-var titulo = livroEl.querySelector('h3') ? livroEl.querySelector('h3').textContent.trim() : slugAlvo;
-abrirModal(slugAlvo, titulo, total);
-configurarModalHome(slugAlvo);
-}
+if (livroEl) livroEl.click();
 }
 });
 }
-  });
 
-  function configurarModalHome(slugAtual) {
-    var overlay = document.getElementById('modal-progresso');
-    if (!overlay) return;
+if (typeof configurarExportar === 'function') configurarExportar();
+if (typeof configurarImportar === 'function') configurarImportar();
+});
+})();
+</script>
 
-    var btnSalvar = overlay.querySelector('#modal-salvar');
-    var inputEl = overlay.querySelector('#input-pagina');
-
-    if (btnSalvar) {
-      btnSalvar.onclick = function() {
-        var pagina = parseInt(inputEl.value, 10);
-        if (isNaN(pagina) || pagina < 0) {
-          inputEl.style.borderColor = '#e94560';
-          return;
-        }
-
-        var livroEl = document.querySelector('.livro[data-slug="' + slugAtual + '"]');
-        if (!livroEl) return;
-
-        var total = parseInt(livroEl.getAttribute('data-total-paginas'), 10) || 0;
-        var resultado = salvarProgresso(slugAtual, pagina, total);
-
-        var barra = livroEl.querySelector('.progresso');
-        var paginaLabel = livroEl.querySelector('.pagina-atual');
-        var statusEl = livroEl.querySelector('.status');
-
-        if (barra) renderizarBarraProgresso(barra, pagina, total);
-        if (paginaLabel && pagina > 0) paginaLabel.textContent = 'pag. ' + pagina;
-        if (statusEl) atualizarStatusBadge(statusEl, resultado.status);
-
-        fecharModal();
-      };
-    }
-  }
-  </script>
+<script src="./js/exportar.js"></script>
+<script src="./js/importar.js"></script>
 
 </body>
 </html>

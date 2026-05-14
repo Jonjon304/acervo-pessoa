@@ -37,23 +37,7 @@
 
 <section class="estante" aria-label="Livros de desenvolvimento pessoal">
 <div class="prateleira prateleira-wrap">
-
-<article class="livro" data-slug="atomic-habits" data-total-paginas="320">
-<div class="livro-capa">
-<div class="capa-placeholder">
-<span class="capa-titulo">Atomic Habits</span>
-<span class="capa-autor">James Clear</span>
-</div>
-<span class="status status-quero-ler">Quero Ler</span>
-</div>
-<div class="livro-info">
-<h3><a href="../acervo/pessoal/atomic-habits.html">Atomic Habits</a></h3>
-<p class="livro-autor">James Clear</p>
-<div class="progresso progresso-0" aria-label="0% lido"></div>
-<span class="pagina-atual"></span>
-</div>
-</article>
-
+<p>Nenhum item nesta categoria ainda. Adicione PDFs pelo botao <strong>+ Adicionar</strong> na pagina principal.</p>
 </div>
 </section>
 </main>
@@ -63,25 +47,6 @@
 <p>Acervo Pessoal &copy; 2025 &middot; Feito com HTML + CSS + JS</p>
 </div>
 </footer>
-
-<script src="../js/progresso.js" defer></script>
-<script defer>
-document.addEventListener('DOMContentLoaded', function() {
-var livros = document.querySelectorAll('.livro');
-livros.forEach(function(livro) {
-var slug = livro.getAttribute('data-slug');
-var dados = lerProgressoItem(slug);
-if (dados) {
-var barra = livro.querySelector('.progresso');
-var paginaLabel = livro.querySelector('.pagina-atual');
-var statusEl = livro.querySelector('.status');
-if (barra) renderizarBarraProgresso(barra, dados.paginaAtual, dados.totalPaginas);
-if (paginaLabel && dados.paginaAtual > 0) paginaLabel.textContent = 'pag. ' + dados.paginaAtual;
-if (statusEl) atualizarStatusBadge(statusEl, dados.status);
-}
-});
-});
-</script>
 
 </body>
 </html>
